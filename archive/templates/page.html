@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="prose">
+    <header>
+        <h1>{{ item.metadata.title }}</h1>
+        {% if item.metadata.date %}
+        <p class="date">
+            <time datetime="{{ item.metadata.date.isoformat() }}">
+                {{ item.metadata.date.strftime('%B %d, %Y') }}
+            </time>
+        </p>
+        {% endif %}
+        {# Add other metadata if needed: tags, author, etc. #}
+    </header>
+
+    {{ item.content_html | safe }} {# Insert the converted HTML from Markdown #}
+
+</article>
+{% endblock %}

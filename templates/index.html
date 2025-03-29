@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    {% if home_html is defined %}
+        {{ home_html | safe }}
+    {% else %}
+        <h2>Welcome</h2>
+        <p>{{ config.SITE_DESCRIPTION }}</p>
+    {% endif %}
+    
+    {% if config.SECTIONS %}
+    <p>Explore the sections:</p>
+    <ul>
+        {% for section_key, section_config in config.SECTIONS.items() %}
+        <li><a href="/{{ section_key }}/">{{ section_config.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {# Optional: Display latest items across all sections #}
+    {#
+    <h3>Latest Updates</h3>
+    <ul class="item-list">
+        {% for item in latest_items | default([]) | sort(attribute='metadata.date', reverse=true) | list | slice(5) %}
+        <li>
+            <a href="{{ item.url }}">{{ item.metadata.title }}</a> ({{ item.metadata.date.strftime('%Y-%m-%d') }}) - <em>{{ item.section_key }}</em>
+        </li>
+        {% endfor %}
+    </ul>
+    #}
+</section>
+{% endblock %}

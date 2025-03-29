@@ -1,0 +1,4 @@
+Jinja2>=3.0
+Markdown>=3.3
+python-frontmatter>=1.0
+PyYAML>=5.4
