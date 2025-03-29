@@ -1,5 +1,5 @@
 """
-Main builder module for the static site generator.
+Main builder module for the Zerodown static site generator.
 """
 
 import os
@@ -7,15 +7,21 @@ import sys
 import datetime
 import time
 
-from ssg.utils import clean_output_dir, copy_static_assets, copy_styles
-from ssg.templates import setup_jinja_env, process_includes
-from ssg.content import process_section, build_homepage, process_top_level_pages
-from ssg.markdown import copy_content_assets
+from zerodown.utils import clean_output_dir, copy_static_assets, copy_styles
+from zerodown.templates import setup_jinja_env, process_includes
+from zerodown.content import process_section, build_homepage, process_top_level_pages
+from zerodown.markdown import copy_content_assets
 
 
 def build_site(config):
     """
     Main function to build the entire static site.
+    
+    Args:
+        config: Configuration module with site settings
+        
+    Returns:
+        bool: True if build was successful
     """
     start_time = datetime.datetime.now()
     print("Starting site build...")

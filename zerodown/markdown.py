@@ -1,5 +1,5 @@
 """
-Markdown processing for the static site generator.
+Markdown processing for the Zerodown static site generator.
 """
 
 import os
@@ -111,6 +111,14 @@ def parse_markdown_file(filepath, output_path=None, base_url=None):
     """
     Parses a Markdown file, extracting front matter and converting content.
     Also processes links and assets to work correctly in the final site.
+    
+    Args:
+        filepath: Path to the Markdown file
+        output_path: Path where the HTML will be output (for link adjustment)
+        base_url: Base URL of the site (for link adjustment)
+        
+    Returns:
+        dict: Dictionary with metadata, HTML content, filepath, and slug
     """
     try:
         post = frontmatter.load(filepath)
@@ -150,6 +158,15 @@ def parse_markdown_content(content, source_path=None, output_path=None, base_url
     """
     Parses Markdown content from a string, extracting front matter and converting content.
     Also processes links and assets if source_path is provided.
+    
+    Args:
+        content: Markdown content string
+        source_path: Path to the source file (for link adjustment)
+        output_path: Path where the HTML will be output (for link adjustment)
+        base_url: Base URL of the site (for link adjustment)
+        
+    Returns:
+        dict: Dictionary with metadata and HTML content
     """
     try:
         # Parse frontmatter
@@ -177,6 +194,12 @@ def process_nav_content(content):
     Pre-process navigation content before Markdown conversion.
     This function extracts the nav content, processes the Markdown list separately,
     and then reinserts it as proper HTML.
+    
+    Args:
+        content: Markdown content string
+        
+    Returns:
+        str: Processed content with navigation lists handled
     """
     # Find nav tags with Markdown lists inside
     nav_pattern = r'(<nav\s+class="[^"]+"\s*>)(.*?)(</nav>)'
@@ -204,6 +227,15 @@ def process_nav_content(content):
 def convert_markdown_to_html(content, source_path=None, output_path=None, base_url=None):
     """
     Converts Markdown content to HTML with optional asset processing.
+    
+    Args:
+        content: Markdown content string
+        source_path: Path to the source file (for link adjustment)
+        output_path: Path where the HTML will be output (for link adjustment)
+        base_url: Base URL of the site (for link adjustment)
+        
+    Returns:
+        str: HTML content
     """
     # Pre-process content to handle navigation lists
     content = process_nav_content(content)
@@ -233,6 +265,9 @@ def copy_content_assets(config):
     Copy assets from content directory to output directory.
     This ensures that images and other assets referenced in Markdown files
     are available in the built site.
+    
+    Args:
+        config: Configuration module with CONTENT_DIR and OUTPUT_DIR defined
     """
     assets_dir = os.path.join(config.CONTENT_DIR, 'assets')
     output_assets_dir = os.path.join(config.OUTPUT_DIR, 'assets')

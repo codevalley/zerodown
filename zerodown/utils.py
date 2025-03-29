@@ -1,5 +1,5 @@
 """
-Utility functions for the static site generator.
+Utility functions for the Zerodown static site generator.
 """
 
 import os
@@ -8,7 +8,12 @@ import sys
 
 
 def clean_output_dir(config):
-    """Removes and recreates the output directory."""
+    """
+    Removes and recreates the output directory.
+    
+    Args:
+        config: Configuration module with OUTPUT_DIR defined
+    """
     print(f"Cleaning directory: {config.OUTPUT_DIR}")
     try:
         if os.path.exists(config.OUTPUT_DIR):
@@ -20,7 +25,12 @@ def clean_output_dir(config):
 
 
 def copy_static_assets(config):
-    """Copies static files (images, fonts, etc.) to the output directory."""
+    """
+    Copies static files (images, fonts, etc.) to the output directory.
+    
+    Args:
+        config: Configuration module with STATIC_DIR and OUTPUT_DIR defined
+    """
     print(f"Copying static assets from {config.STATIC_DIR} to {config.OUTPUT_DIR}")
     if os.path.exists(config.STATIC_DIR) and os.path.isdir(config.STATIC_DIR):
         try:
@@ -32,7 +42,12 @@ def copy_static_assets(config):
 
 
 def copy_styles(config):
-    """Copies the selected theme CSS file as main.css."""
+    """
+    Copies the selected theme CSS file as main.css.
+    
+    Args:
+        config: Configuration module with STYLES_DIR, OUTPUT_DIR, and THEME_CSS_FILE defined
+    """
     styles_output_dir = os.path.join(config.OUTPUT_DIR, 'styles')
     selected_theme_file = getattr(config, 'THEME_CSS_FILE', 'main.css')
     source_css_path = os.path.join(config.STYLES_DIR, selected_theme_file)
@@ -65,7 +80,16 @@ def copy_styles(config):
 
 
 def write_output_file(output_path, content):
-    """Writes content to an output file with proper error handling."""
+    """
+    Writes content to an output file with proper error handling.
+    
+    Args:
+        output_path: Path where to write the content
+        content: String content to write
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
     try:
         # Ensure the directory exists
         os.makedirs(os.path.dirname(output_path), exist_ok=True)

@@ -29,6 +29,10 @@ ENV/
 
 # Generated output
 public/
+examples/*/public/
+my-blog/
+# Example site generated files
+examples/*/output/
 
 # IDE files
 .idea/

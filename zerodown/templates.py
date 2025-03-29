@@ -1,5 +1,5 @@
 """
-Template handling for the static site generator.
+Template handling for the Zerodown static site generator.
 """
 
 import os
@@ -9,7 +9,15 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def setup_jinja_env(config):
-    """Sets up the Jinja2 templating environment."""
+    """
+    Sets up the Jinja2 templating environment.
+    
+    Args:
+        config: Configuration module with TEMPLATE_DIR defined
+        
+    Returns:
+        Environment: Configured Jinja2 environment
+    """
     print(f"Setting up Jinja2 environment for templates in: {config.TEMPLATE_DIR}")
     try:
         env = Environment(
@@ -26,7 +34,17 @@ def setup_jinja_env(config):
 
 
 def render_template(env, template_name, context):
-    """Renders a Jinja2 template with the given context."""
+    """
+    Renders a Jinja2 template with the given context.
+    
+    Args:
+        env: Jinja2 environment
+        template_name: Name of the template to render
+        context: Dictionary of variables to pass to the template
+        
+    Returns:
+        str: Rendered HTML content
+    """
     try:
         template = env.get_template(template_name)
         return template.render(context)
@@ -37,9 +55,18 @@ def render_template(env, template_name, context):
 
 
 def process_includes(config, jinja_env):
-    """Process Markdown includes for global template context."""
+    """
+    Process Markdown includes for global template context.
+    
+    Args:
+        config: Configuration module with CONTENT_DIR defined
+        jinja_env: Jinja2 environment to update with globals
+        
+    Returns:
+        dict: Global context with processed includes
+    """
     # Importing here to avoid circular imports
-    from ssg.markdown import parse_markdown_content
+    from zerodown.markdown import parse_markdown_content
     
     global_context = {}  # Dictionary to hold data for all templates
     includes_dir = os.path.join(config.CONTENT_DIR, '_includes')

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <section class="projects-section">
+        <h1 class="section-title">{{ section.title }}</h1>
+        
+        {% if items %}
+            <div class="project-grid">
+                {% for project in items %}
+                <div class="project-card">
+                    {% if project.metadata.image %}
+                    <div class="project-card-image">
+                        <a href="{{ project.url }}">
+                            <img src="{{ project.metadata.image }}" alt="{{ project.metadata.title }}">
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="project-card-content">
+                        <h2 class="project-card-title">
+                            <a href="{{ project.url }}">{{ project.metadata.title }}</a>
+                        </h2>
+                        
+                        {% if project.metadata.tags %}
+                        <div class="project-card-tags">
+                            {% for tag in project.metadata.tags[:3] %}
+                            <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="project-card-description">
+                            {% if project.metadata.summary %}
+                                {{ project.metadata.summary }}
+                            {% else %}
+                                {{ project.content_html | striptags | truncate(150) | safe }}
+                            {% endif %}
+                        </div>
+                        
+                        <a href="{{ project.url }}" class="read-more">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No projects found.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

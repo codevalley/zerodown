@@ -1,17 +1,29 @@
 """
-Content handling for the static site generator.
+Content handling for the Zerodown static site generator.
 """
 
 import os
 import datetime
 import sys
-from ssg.markdown import parse_markdown_file
-from ssg.templates import render_template
-from ssg.utils import write_output_file
+from zerodown.markdown import parse_markdown_file
+from zerodown.templates import render_template
+from zerodown.utils import write_output_file
 
 
 def process_section(config, jinja_env, section_key, section_config, all_items):
-    """Process a single section of content."""
+    """
+    Process a single section of content.
+    
+    Args:
+        config: Configuration module
+        jinja_env: Jinja2 environment
+        section_key: Key identifying the section
+        section_config: Configuration for this section
+        all_items: List to which processed items will be added
+        
+    Returns:
+        list: Processed items for this section
+    """
     if not isinstance(section_config, dict):
         print(f"Warning: Invalid configuration for section '{section_key}' in config.py. Skipping.")
         return []
@@ -78,7 +90,14 @@ def process_section(config, jinja_env, section_key, section_config, all_items):
 
 
 def sort_items(items, config, section_key):
-    """Sort a list of content items based on configuration."""
+    """
+    Sort a list of content items based on configuration.
+    
+    Args:
+        items: List of content items to sort
+        config: Configuration for the section
+        section_key: Key identifying the section
+    """
     sort_key = config.get("sort_by")
     if not sort_key or not items:  # Only sort if key exists and items exist
         return
@@ -105,7 +124,15 @@ def sort_items(items, config, section_key):
 
 
 def build_item_pages(config, jinja_env, items, section_config):
-    """Build individual HTML pages for each content item."""
+    """
+    Build individual HTML pages for each content item.
+    
+    Args:
+        config: Configuration module
+        jinja_env: Jinja2 environment
+        items: List of content items
+        section_config: Configuration for this section
+    """
     if not items:
         return
         
@@ -127,7 +154,17 @@ def build_item_pages(config, jinja_env, items, section_config):
 
 
 def build_section_list(config, jinja_env, items, section_config, section_key, section_title):
-    """Build a list page for a section."""
+    """
+    Build a list page for a section.
+    
+    Args:
+        config: Configuration module
+        jinja_env: Jinja2 environment
+        items: List of content items
+        section_config: Configuration for this section
+        section_key: Key identifying the section
+        section_title: Title for the section
+    """
     list_template = section_config.get("list_template", "list.html")  # Default to list.html
     list_output_path = os.path.join(config.OUTPUT_DIR, section_key, "index.html")
     list_title = f"{section_title} - {config.SITE_NAME}"  # Use defined section title
@@ -146,7 +183,14 @@ def build_section_list(config, jinja_env, items, section_config, section_key, se
 
 
 def build_homepage(config, jinja_env, all_items):
-    """Build the main homepage."""
+    """
+    Build the main homepage.
+    
+    Args:
+        config: Configuration module
+        jinja_env: Jinja2 environment
+        all_items: List of all content items
+    """
     print("\nBuilding top-level pages...")
     
     index_output_path = os.path.join(config.OUTPUT_DIR, "index.html")
@@ -164,7 +208,13 @@ def build_homepage(config, jinja_env, all_items):
 
 
 def process_top_level_pages(config, jinja_env):
-    """Process any standalone pages at the top level of the content directory."""
+    """
+    Process any standalone pages at the top level of the content directory.
+    
+    Args:
+        config: Configuration module
+        jinja_env: Jinja2 environment
+    """
     # This is a placeholder for future functionality
     # Example: Build an about page from content/about.md if it exists
     about_md_path = os.path.join(config.CONTENT_DIR, "about.md")

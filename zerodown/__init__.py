@@ -8,3 +8,5 @@ into beautiful, fast-loading websites with proper link and asset handling.
 __version__ = '0.1.0'
 __author__ = 'Zerodown Team'
 __license__ = 'MIT'
+
+from zerodown.builder import build_site

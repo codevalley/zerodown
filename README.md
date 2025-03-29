@@ -32,43 +32,76 @@ Zerodown is a lightning-fast, zero-configuration static site generator that tran
 
 ### Installation
 
+You can install Zerodown in two ways:
+
+#### Option 1: Install from source
+
 1. Clone this repository:
    ```bash
    git clone https://github.com/yourusername/zerodown.git
    cd zerodown
    ```
 
-2. Install dependencies:
+2. Install the package:
    ```bash
-   pip install -r requirements.txt
+   pip install -e .
+   ```
+
+#### Option 2: Quick start without installing
+
+If you just want to try Zerodown without installing it:
+
+1. Clone the repository as above
+2. Run the included script:
+   ```bash
+   python run_zerodown.py
    ```
 
 > 💡 **Pro tip**: Use a virtual environment to keep your dependencies isolated!
 
 ### 🏗️ Creating Your Site
 
-1. **Configure your site**:
-   Edit `config.py` to set your site title, description, and other settings.
+The easiest way to get started is to use one of the example templates:
+   ```bash
+   # For a blog
+   cp -r examples/blog my-blog
+   
+   # For a portfolio
+   cp -r examples/portfolio my-portfolio
+   
+   # For a minimal site
+   cp -r examples/basic my-site
+   ```
 
-2. **Add content**:
+2. **Configure your site**:
+   Edit `config.py` in your project directory to set your site title, description, and other settings.
+
+3. **Add content**:
    - 📄 Place Markdown files in the `content/` directory
    - 📂 Organize content into sections (e.g., `content/notes/`, `content/projects/`)
    - 🧩 Add global elements in `content/_includes/` (header, footer, homepage)
    - 🖼️ Store images and other assets in `content/assets/`
 
-3. **Customize templates**:
+4. **Customize templates**:
    - 🖌️ Edit HTML templates in the `templates/` directory
    - 🎨 Create or modify CSS themes in the `styles/` directory
 
 4. **Build your site**:
    ```bash
-   python build.py
+   # If you installed the package
+   python -m zerodown build /path/to/your/site
+   
+   # Or using the run script
+   python run_zerodown.py /path/to/your/site
    ```
 
 5. **Preview locally**:
    ```bash
-   cd public
-   python -m http.server
+   # If you installed the package
+   python -m zerodown serve /path/to/your/site
+   
+   # Or using the run script
+   python run_zerodown.py serve /path/to/your/site
    ```
    Then visit `http://localhost:8000` in your browser. ✨
 
@@ -119,12 +152,12 @@ Zerodown automatically adjusts paths to work correctly in the final site. No mor
 
 ## 🚀 Deployment
 
-After building your site, the `public/` directory contains all the files needed for your website. You can deploy these files to any static hosting service:
+After building your site, the `_site/` directory contains all the files needed for your website. You can deploy these files to any static hosting service:
 
-- 🌐 **GitHub Pages**: Push the `public/` directory to a GitHub repository
-- ⚡ **Netlify**: Connect your repository and set the publish directory to `public/`
+- 🌐 **GitHub Pages**: Push the `_site/` directory to a GitHub repository
+- ⚡ **Netlify**: Connect your repository and set the publish directory to `_site/`
 - 🔼 **Vercel**: Similar to Netlify, with automatic deployments
-- ☁️ **Amazon S3**: Upload the `public/` directory to an S3 bucket configured for static website hosting
+- ☁️ **Amazon S3**: Upload the `_site/` directory to an S3 bucket configured for static website hosting
 
 > 💡 **Pro tip**: Set up a GitHub Action to automatically build and deploy your site whenever you push changes!
 
@@ -168,13 +201,26 @@ After building your site, the `public/` directory contains all the files needed 
 
 Zerodown is organized into modular components:
 
-- `build.py`: Main entry point
-- `config.py`: Site configuration
-- `ssg/`: Core modules
-  - `builder.py`: Main build orchestration
-  - `content.py`: Content processing
-  - `markdown.py`: Markdown handling with link/asset processing
-  - `templates.py`: Template handling
+```
+zerodown/
+├── zerodown/           # Core package (the framework)
+│   ├── __init__.py     # Package initialization
+│   ├── builder.py      # Main build orchestration
+│   ├── cli.py          # Command-line interface
+│   ├── config.py       # Configuration handling
+│   ├── content.py      # Content processing
+│   ├── markdown.py     # Markdown handling with link/asset processing
+│   ├── templates.py    # Template handling
+│   └── utils.py        # Utility functions
+├── examples/           # Example sites
+│   ├── basic/          # Minimal example
+│   ├── blog/           # Blog template
+│   └── portfolio/      # Portfolio template
+├── setup.py            # Package installation
+└── run_zerodown.py     # Script to run without installing
+```
+
+This modular architecture ensures a clean separation between the framework and your content, making it easy to upgrade Zerodown without affecting your site.
   - `utils.py`: Utility functions
 
 ## 👥 Contributing

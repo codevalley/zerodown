@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post-list">
+    <h1 class="page-title">{{ section.title }}</h1>
+    
+    {% if items %}
+        {% for post in items %}
+        <article class="post-card">
+            <header class="post-card-header">
+                <h2 class="post-card-title"><a href="{{ post.url }}">{{ post.metadata.title }}</a></h2>
+                <div class="post-card-meta">
+                    {% if post.metadata.date %}
+                    <span class="post-card-date"><i class="far fa-calendar-alt"></i> {{ post.metadata.date.strftime('%B %d, %Y') }}</span>
+                    {% endif %}
+                    {% if post.metadata.author %}
+                    <span class="post-card-author"><i class="far fa-user"></i> {{ post.metadata.author }}</span>
+                    {% endif %}
+                </div>
+            </header>
+            
+            <div class="post-card-excerpt">
+                {% if post.metadata.excerpt %}
+                    {{ post.metadata.excerpt }}
+                {% else %}
+                    {{ post.content_html | striptags | truncate(150) | safe }}
+                {% endif %}
+            </div>
+            
+            <footer class="post-card-footer">
+                <a href="{{ post.url }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </footer>
+        </article>
+        {% endfor %}
+    {% else %}
+        <p>No posts found.</p>
+    {% endif %}
+</div>
+{% endblock %}

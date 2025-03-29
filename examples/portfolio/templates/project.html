@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <article class="project-detail">
+        <header class="project-header">
+            <h1 class="project-title">{{ item.metadata.title }}</h1>
+            {% if item.metadata.client %}
+            <div class="project-meta">
+                <span class="project-client"><i class="fas fa-briefcase"></i> Client: {{ item.metadata.client }}</span>
+            </div>
+            {% endif %}
+            
+            {% if item.metadata.tags %}
+            <div class="project-tags">
+                {% for tag in item.metadata.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </header>
+        
+        {% if item.metadata.image %}
+        <div class="project-featured-image">
+            <img src="{{ item.metadata.image }}" alt="{{ item.metadata.title }}">
+        </div>
+        {% endif %}
+        
+        <div class="project-content">
+            {{ item.content_html | safe }}
+        </div>
+        
+        {% if item.metadata.link %}
+        <div class="project-link">
+            <a href="{{ item.metadata.link }}" class="button" target="_blank">View Project <i class="fas fa-external-link-alt"></i></a>
+        </div>
+        {% endif %}
+        
+        <footer class="project-footer">
+            <div class="project-navigation">
+                <a href="/projects/" class="back-button"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+            </div>
+        </footer>
+    </article>
+</div>
+{% endblock %}

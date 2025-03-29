@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Welcome to {{ config.SITE_NAME }}</h1>
+    <p class="lead">{{ config.SITE_DESCRIPTION }}</p>
+</section>
+
+<section class="latest-posts">
+    <h2>Latest Posts</h2>
+    
+    {% if latest_items %}
+        {% set posts = [] %}
+        {% for item in latest_items %}
+            {% if item.section_key == 'posts' %}
+                {% set posts = posts + [item] %}
+            {% endif %}
+        {% endfor %}
+        
+        {% if posts %}
+            <div class="post-grid">
+                {% for post in posts[:3] %}
+                <article class="post-card">
+                    <header class="post-card-header">
+                        <h3 class="post-card-title"><a href="{{ post.url }}">{{ post.metadata.title }}</a></h3>
+                        {% if post.metadata.date %}
+                        <span class="post-card-date"><i class="far fa-calendar-alt"></i> {{ post.metadata.date.strftime('%B %d, %Y') }}</span>
+                        {% endif %}
+                    </header>
+                    
+                    <div class="post-card-excerpt">
+                        {% if post.metadata.excerpt %}
+                            {{ post.metadata.excerpt }}
+                        {% else %}
+                            {{ post.content_html | striptags | truncate(100) | safe }}
+                        {% endif %}
+                    </div>
+                    
+                    <footer class="post-card-footer">
+                        <a href="{{ post.url }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </footer>
+                </article>
+                {% endfor %}
+            </div>
+            
+            <div class="view-all">
+                <a href="/posts/" class="button">View All Posts</a>
+            </div>
+        {% else %}
+            <p>No posts found.</p>
+        {% endif %}
+    {% else %}
+        <p>No posts found.</p>
+    {% endif %}
+</section>
+
+<section class="about-section">
+    {% if about_html %}
+        {{ about_html | safe }}
+    {% else %}
+        <h2>About This Blog</h2>
+        <p>This is a simple blog built with Zerodown, a zero-effort Markdown website generator. 
+        Edit the content/_includes/about.md file to customize this section.</p>
+    {% endif %}
+</section>
+{% endblock %}
