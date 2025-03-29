@@ -4,7 +4,7 @@ import textwrap
 import datetime
 
 # --- Configuration ---
-PROJECT_NAME = "your-minimal-site"
+PROJECT_NAME = "zerodown"
 
 # Define directories relative to the project root
 DIRECTORIES = [
