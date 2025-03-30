@@ -61,7 +61,29 @@ If you just want to try Zerodown without installing it:
 
 ### 🏗️ Creating Your Site
 
-The easiest way to get started is to use one of the example templates:
+#### Using the CLI (Recommended)
+
+1. **Initialize a new site** with one of the example templates:
+   ```bash
+   # For a blog (creates config.yaml by default)
+   zerodown init my-blog --template blog
+   
+   # For a portfolio
+   zerodown init my-portfolio --template portfolio
+   
+   # For a minimal site
+   zerodown init my-site --template basic
+   
+   # If you prefer Python configuration
+   zerodown init my-site --template basic --config-format py
+   ```
+
+2. **Configure your site**:
+   Edit `config.yaml` (or `config.py` if you chose Python format) in your project directory to set your site title, description, and other settings.
+
+#### Manual Setup
+
+1. **Copy an example template**:
    ```bash
    # For a blog
    cp -r examples/blog my-blog
@@ -74,7 +96,7 @@ The easiest way to get started is to use one of the example templates:
    ```
 
 2. **Configure your site**:
-   Edit `config.py` in your project directory to set your site title, description, and other settings.
+   Edit `config.yaml` (or `config.py`) in your project directory to set your site title, description, and other settings.
 
 3. **Add content**:
    - 📄 Place Markdown files in the `content/` directory
@@ -86,19 +108,19 @@ The easiest way to get started is to use one of the example templates:
    - 🖌️ Edit HTML templates in the `templates/` directory
    - 🎨 Create or modify CSS themes in the `styles/` directory
 
-4. **Build your site**:
+5. **Build your site**:
    ```bash
    # If you installed the package
-   python -m zerodown build /path/to/your/site
+   zerodown build /path/to/your/site
    
    # Or using the run script
-   python run_zerodown.py /path/to/your/site
+   python run_zerodown.py build /path/to/your/site
    ```
 
-5. **Preview locally**:
+6. **Preview locally**:
    ```bash
    # If you installed the package
-   python -m zerodown serve /path/to/your/site
+   zerodown serve /path/to/your/site
    
    # Or using the run script
    python run_zerodown.py serve /path/to/your/site
@@ -163,9 +185,64 @@ After building your site, the `_site/` directory contains all the files needed f
 
 ## 🛠️ Customization
 
+### 📄 Configuration Options
+
+Zerodown supports two configuration formats:
+
+#### YAML Configuration (Recommended)
+
+YAML configuration is simpler and more user-friendly, perfect for non-technical users:
+
+```yaml
+# config.yaml
+site_name: My Website
+site_description: A beautiful static site
+
+# Content sections
+sections:
+  posts:
+    title: Blog Posts
+    template: post.html
+    sort_by: date
+    reverse_sort: true
+```
+
+#### Python Configuration
+
+Python configuration offers more flexibility for advanced users:
+
+```python
+# config.py
+SITE_NAME = "My Website"
+SITE_DESCRIPTION = "A beautiful static site"
+
+# Content sections
+SECTIONS = {
+    "posts": {
+        "title": "Blog Posts",
+        "template": "post.html",
+        "sort_by": "date",
+        "reverse_sort": True
+    }
+}
+```
+
+> 💡 **Note**: When both `config.yaml` and `config.py` exist, the YAML configuration takes precedence.
+
 ### 📚 Adding New Sections
 
-1. Add a new section to the `SECTIONS` dictionary in `config.py`:
+1. Add a new section to your configuration file:
+
+   **In YAML (config.yaml):**
+   ```yaml
+   sections:
+     projects:
+       title: Projects
+       sort_by: date
+       reverse_sort: true
+   ```
+
+   **Or in Python (config.py):**
    ```python
    "projects": {
        "title": "Projects",
@@ -190,7 +267,14 @@ After building your site, the `_site/` directory contains all the files needed f
 
 2. Edit the CSS file to customize the appearance.
 
-3. Update `config.py` to use your new theme:
+3. Update your configuration to use your new theme:
+
+   **In YAML (config.yaml):**
+   ```yaml
+   theme_css_file: my-theme.css
+   ```
+
+   **Or in Python (config.py):**
    ```python
    THEME_CSS_FILE = "my-theme.css"
    ```

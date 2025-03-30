@@ -35,6 +35,10 @@ def main():
         '--template', choices=['basic', 'blog', 'portfolio'], default='basic',
         help='Template to use for the new site (default: basic)'
     )
+    init_parser.add_argument(
+        '--config-format', choices=['yaml', 'py'], default='yaml',
+        help='Format for the configuration file (default: yaml)'
+    )
     
     # 'build' command
     build_parser = subparsers.add_parser('build', help='Build the site')
@@ -67,17 +71,19 @@ def main():
     
     # Handle commands
     if args.command == 'init':
-        init_site(args.path, args.template)
+        init_site(args.path, args.template, args.config_format)
     elif args.command == 'build':
+        # Get absolute paths before changing directory
+        site_path = os.path.abspath(args.path)
+        config_path = args.config
+        if not os.path.isabs(config_path):
+            config_path = os.path.join(site_path, config_path)
+        
         # Change to the specified directory
         original_dir = os.getcwd()
-        os.chdir(args.path)
+        os.chdir(site_path)
         
         try:
-            config_path = args.config
-            if not os.path.isabs(config_path):
-                config_path = os.path.join(os.getcwd(), config_path)
-                
             config = load_config(config_path)
             build_site(config)
         finally:
@@ -90,7 +96,7 @@ def main():
         sys.exit(0)
 
 
-def init_site(path, template):
+def init_site(path, template, config_format='yaml'):
     """
     Initialize a new Zerodown site.
     
@@ -126,7 +132,11 @@ def init_site(path, template):
                 shutil.copy2(item, target_path)
         
         # Create default config if it doesn't exist
-        config_path = target_dir / 'config.py'
+        if config_format == 'yaml':
+            config_path = target_dir / 'config.yaml'
+        else:
+            config_path = target_dir / 'config.py'
+            
         if not config_path.exists():
             create_default_config(str(config_path))
         
@@ -146,16 +156,18 @@ def serve_site(port, config_path, site_path='.'):
         config_path: Path to the configuration file
         site_path: Path to the site directory
     """
+    # Get absolute paths before changing directory
+    site_path_abs = os.path.abspath(site_path)
+    config_path_abs = config_path
+    if not os.path.isabs(config_path_abs):
+        config_path_abs = os.path.join(site_path_abs, config_path)
+    
     # Change to the specified directory
     original_dir = os.getcwd()
-    os.chdir(site_path)
+    os.chdir(site_path_abs)
     
     try:
         # First build the site
-        config_path_abs = config_path
-        if not os.path.isabs(config_path_abs):
-            config_path_abs = os.path.join(os.getcwd(), config_path)
-            
         config = load_config(config_path_abs)
         build_site(config)
         

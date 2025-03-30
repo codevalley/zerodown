@@ -1,0 +1,36 @@
+# Portfolio example configuration
+
+# Site information
+site_name: My Portfolio
+site_description: A showcase of my work and skills
+base_url: /  # Use "/" for local development, or your domain for production
+
+# Directory paths
+content_dir: content
+template_dir: templates
+styles_dir: styles
+static_dir: static
+output_dir: _site
+
+# Theme settings
+theme_css_file: portfolio.css  # The CSS file to use from the styles directory
+
+# Content sections
+sections:
+  projects:
+    title: My Projects
+    template: project.html
+    list_template: project_list.html
+    sort_by: order  # Custom sort order
+    reverse_sort: false  # Important first
+
+# Navigation items
+nav_items:
+  - title: Home
+    url: /
+  - title: Projects
+    url: /projects/
+  - title: About
+    url: /about.html
+  - title: Contact
+    url: /contact.html

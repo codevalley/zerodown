@@ -1,17 +1,35 @@
 /* 
  * Blog Theme for Zerodown
- * A clean, modern blog theme
+ * Inspired by frankchimero.com
+ * Features light and dark themes
  */
 
 :root {
-  --primary-color: #3498db;
-  --secondary-color: #2c3e50;
-  --text-color: #333;
-  --light-gray: #f5f5f5;
-  --medium-gray: #e0e0e0;
-  --dark-gray: #666;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-serif: Georgia, "Times New Roman", serif;
+  /* Light theme (default) */
+  --background: #ffffff;
+  --text: #111111;
+  --secondary-text: #555555;
+  --accent: #0055ff;
+  --border: #dddddd;
+  --card-bg: #f7f7f7;
+  --code-bg: #f0f0f0;
+  
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Times New Roman", Times, serif;
+  --font-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
+  
+  /* Spacing */
+  --space-unit: 1rem;
+  --space-xs: calc(0.25 * var(--space-unit));
+  --space-s: calc(0.5 * var(--space-unit));
+  --space-m: calc(1 * var(--space-unit));
+  --space-l: calc(2 * var(--space-unit));
+  --space-xl: calc(4 * var(--space-unit));
+  
+  /* Layout */
+  --width-content: 38rem;
+  --width-full: 60rem;
 }
 
 /* Base Styles */
@@ -21,148 +39,214 @@
   padding: 0;
 }
 
+html {
+  font-size: 18px;
+}
+
 body {
   font-family: var(--font-sans);
   line-height: 1.6;
-  color: var(--text-color);
-  background-color: #fff;
+  color: var(--text);
+  background-color: var(--background);
+  padding: var(--space-l);
+  max-width: var(--width-full);
+  margin: 0 auto;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
-  width: 90%;
-  max-width: 1200px;
+  max-width: var(--width-content);
   margin: 0 auto;
-  padding: 0 20px;
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-a:hover {
-  color: var(--secondary-color);
+  padding: 0 var(--space-m);
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 1rem;
-  line-height: 1.3;
-  color: var(--secondary-color);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-m);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-top: var(--space-l);
+}
+
+h2 {
+  font-size: 1.8rem;
+}
+
+h3 {
+  font-size: 1.4rem;
 }
 
 p, ul, ol {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-m);
 }
 
-/* Header */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+a:hover {
+  border-bottom-color: var(--accent);
+}
+
+code {
+  font-family: var(--font-mono);
+  background-color: var(--code-bg);
+  padding: var(--space-xs) var(--space-s);
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+pre {
+  background-color: var(--code-bg);
+  padding: var(--space-m);
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-bottom: var(--space-m);
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+blockquote {
+  border-left: 4px solid var(--border);
+  padding-left: var(--space-m);
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+  color: var(--secondary-text);
+}
+
+/* Layout Components */
 header {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 0;
-  margin-bottom: 2rem;
-}
-
-.site-title {
-  font-size: 1.8rem;
-  margin: 0;
-}
-
-.site-title a {
-  color: var(--secondary-color);
+  padding: var(--space-l) 0;
+  margin-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border);
 }
 
 header .container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.site-title a {
+  color: var(--text);
+  border-bottom: none;
+}
+
+nav {
+  display: flex;
+  gap: var(--space-m);
 }
 
 nav ul {
   display: flex;
   list-style: none;
   margin: 0;
+  gap: var(--space-m);
 }
 
 nav li {
-  margin-left: 1.5rem;
+  margin: 0;
 }
 
 nav a {
-  color: var(--secondary-color);
+  color: var(--text);
   font-weight: 500;
+  border-bottom: none;
 }
 
 nav a:hover {
-  color: var(--primary-color);
+  color: var(--accent);
 }
 
 /* Main Content */
 main {
+  margin: var(--space-xl) 0;
   min-height: 70vh;
-  padding: 2rem 0;
+}
+
+footer {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-l);
+  border-top: 1px solid var(--border);
+  color: var(--secondary-text);
+  font-size: 0.9rem;
 }
 
 /* Hero Section */
 .hero {
-  text-align: center;
-  padding: 3rem 0;
-  margin-bottom: 2rem;
-  background-color: var(--light-gray);
-  border-radius: 5px;
+  margin-bottom: var(--space-xl);
 }
 
 .hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 2.8rem;
+  margin-bottom: var(--space-m);
+  line-height: 1.1;
 }
 
 .lead {
   font-size: 1.2rem;
-  color: var(--dark-gray);
-  max-width: 700px;
-  margin: 0 auto;
+  color: var(--secondary-text);
+  max-width: var(--width-content);
+  margin-bottom: var(--space-l);
 }
 
 /* Post List */
 .post-list {
-  margin-bottom: 3rem;
+  list-style: none;
+  margin-bottom: var(--space-xl);
 }
 
 .page-title {
-  margin-bottom: 2rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--medium-gray);
+  margin-bottom: var(--space-l);
+  margin-top: 0;
 }
 
-.post-card {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--medium-gray);
+.post-item {
+  margin-bottom: var(--space-l);
+  padding-bottom: var(--space-l);
+  border-bottom: 1px solid var(--border);
 }
 
-.post-card:last-child {
+.post-item:last-child {
   border-bottom: none;
 }
 
-.post-card-title {
+.post-title {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0;
+  margin-bottom: var(--space-xs);
 }
 
-.post-card-meta {
-  margin-bottom: 1rem;
-  color: var(--dark-gray);
+.post-meta {
+  margin-bottom: var(--space-m);
+  color: var(--secondary-text);
   font-size: 0.9rem;
 }
 
-.post-card-meta span {
-  margin-right: 1rem;
+.post-meta span {
+  margin-right: var(--space-m);
 }
 
-.post-card-excerpt {
-  margin-bottom: 1rem;
+.post-excerpt {
+  margin-bottom: var(--space-m);
 }
 
 .read-more {

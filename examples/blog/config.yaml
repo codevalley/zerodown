@@ -1,0 +1,34 @@
+# Blog example configuration
+
+# Site information
+site_name: My Zerodown Blog
+site_description: A simple blog built with Zerodown
+base_url: /  # Use "/" for local development, or your domain for production
+
+# Directory paths
+content_dir: content
+template_dir: templates
+styles_dir: styles
+static_dir: static
+output_dir: _site
+
+# Theme settings
+theme_css_file: blog.css  # The CSS file to use from the styles directory
+
+# Content sections
+sections:
+  posts:
+    title: Blog Posts
+    template: post.html
+    list_template: post_list.html
+    sort_by: date
+    reverse_sort: true
+
+# Navigation items
+nav_items:
+  - title: Home
+    url: /
+  - title: Blog
+    url: /posts/
+  - title: About
+    url: /about.html

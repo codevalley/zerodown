@@ -1,0 +1,33 @@
+# Basic site configuration
+
+# Site information
+site_name: Your Name
+site_author: Your Name
+site_description: Thoughts and creations
+base_url: http://localhost:8000  # Or your final domain "https://yourwebsite.com"
+
+# Directory paths
+content_dir: content
+template_dir: templates
+static_dir: static
+styles_dir: styles
+output_dir: public
+
+# Theme settings
+theme_css_file: dark-theme.css  # Change this to use a different theme file
+
+# Content sections
+sections:
+  notes:
+    title: Notes
+    template: page.html
+    list_template: list.html
+    sort_by: date
+    reverse_sort: true
+  # Add other sections like 'projects', 'art' here following the same pattern
+  # projects:
+  #   title: Projects
+  #   template: project.html
+  #   list_template: project_list.html
+  #   sort_by: date
+  #   reverse_sort: true

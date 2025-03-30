@@ -33,6 +33,8 @@ examples/*/public/
 my-blog/
 # Example site generated files
 examples/*/output/
+backup/
+
 
 # IDE files
 .idea/
