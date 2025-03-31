@@ -5,9 +5,11 @@ Content handling for the Zerodown static site generator.
 import os
 import datetime
 import sys
+from pathlib import Path
 from zerodown.markdown import parse_markdown_file
 from zerodown.templates import render_template
 from zerodown.utils import write_output_file
+from zerodown.console import zconsole
 
 
 def process_section(config, jinja_env, section_key, section_config, all_items):
@@ -25,23 +27,22 @@ def process_section(config, jinja_env, section_key, section_config, all_items):
         list: Processed items for this section
     """
     if not isinstance(section_config, dict):
-        print(f"Warning: Invalid configuration for section '{section_key}' in config.py. Skipping.")
+        zconsole.warning(f"Invalid configuration for section '{section_key}'. Skipping.")
         return []
 
     section_title = section_config.get('title', section_key.capitalize())  # Default title
-    print(f"\nProcessing section: {section_key} ({section_title})")
-
+    
     section_content_dir = os.path.join(config.CONTENT_DIR, section_key)
     section_output_dir = os.path.join(config.OUTPUT_DIR, section_key)
 
     if not os.path.isdir(section_content_dir):
-        print(f"Warning: Content directory not found for section '{section_key}': {section_content_dir}. Skipping section.")
+        zconsole.warning(f"Content directory not found for section '{section_key}': {section_content_dir}. Skipping section.")
         return []  # Skip this section if content dir doesn't exist
 
     try:
         os.makedirs(section_output_dir, exist_ok=True)  # Ensure output dir exists
     except OSError as e:
-        print(f"Error creating output directory '{section_output_dir}': {e}. Skipping section.")
+        zconsole.error(f"Failed to create output directory '{section_output_dir}': {e}. Skipping section.")
         return []
 
     section_items = []
@@ -50,7 +51,7 @@ def process_section(config, jinja_env, section_key, section_config, all_items):
     try:
         filenames = os.listdir(section_content_dir)
     except OSError as e:
-        print(f"Error reading content directory '{section_content_dir}': {e}. Skipping section.")
+        zconsole.error(f"Error reading content directory '{section_content_dir}': {e}. Skipping section.")
         return []
 
     for filename in filenames:
@@ -85,11 +86,16 @@ def process_section(config, jinja_env, section_key, section_config, all_items):
 
     # Sort items if configured
     sort_items(section_items, section_config, section_key)
+    zconsole.info(f"Sorted {len(section_items)} items by '{section_config.get('sort_by', 'date')}' (reverse={section_config.get('sort_reverse', True)})")
 
     # Build individual pages for each item
+    zconsole.info(f"Building {len(section_items)} individual pages using template '{section_config.get('template', 'page.html')}'...")
     build_item_pages(config, jinja_env, section_items, section_config)
 
     # Build section list page
+    list_template = section_config.get('list_template', 'list.html')
+    index_path = f"{section_output_dir}/index.html"
+    zconsole.info(f"Building section list page '{index_path}' using template '{list_template}'...")
     build_section_list(config, jinja_env, section_items, section_config, section_key, section_title)
 
     # Add items to the global list
@@ -127,9 +133,8 @@ def sort_items(items, config, section_key):
     try:
         # Use a try-except block during sort in case of incompatible types comparison
         items.sort(key=get_sort_value, reverse=reverse_sort)
-        print(f"Sorted {len(items)} items by '{sort_key}' (reverse={reverse_sort})")
     except TypeError as e:
-        print(f"Warning: Could not sort section '{section_key}' by '{sort_key}'. Check data types are comparable. Error: {e}")
+        zconsole.warning(f"Could not sort section '{section_key}' by '{sort_key}'. Check data types are comparable. Error: {e}")
 
 
 def build_item_pages(config, jinja_env, items, section_config):
@@ -146,7 +151,6 @@ def build_item_pages(config, jinja_env, items, section_config):
         return
         
     item_template = section_config.get("template", "page.html")  # Default to page.html
-    print(f"Building {len(items)} individual pages using template '{item_template}'...")
     
     for item in items:
         output_path = os.path.join(config.OUTPUT_DIR, item["section_key"], f"{item['slug']}.html")
@@ -178,7 +182,7 @@ def build_section_list(config, jinja_env, items, section_config, section_key, se
     list_output_path = os.path.join(config.OUTPUT_DIR, section_key, "index.html")
     list_title = f"{section_title} - {config.SITE_NAME}"  # Use defined section title
     
-    print(f"Building section list page '{list_output_path}' using template '{list_template}'...")
+    # Logging is now handled in the process_section function
     
     context = {
         "items": items,
@@ -200,7 +204,7 @@ def build_homepage(config, jinja_env, all_items):
         jinja_env: Jinja2 environment
         all_items: List of all content items
     """
-    print("\nBuilding top-level pages...")
+    zconsole.subheader("Building top-level pages")
     
     index_output_path = os.path.join(config.OUTPUT_DIR, "index.html")
     context = {
@@ -232,7 +236,7 @@ def build_homepage(config, jinja_env, all_items):
     success = write_output_file(index_output_path, html_output)
     
     if success:
-        print(f"Built homepage: {index_output_path}")
+        zconsole.success(f"Built homepage: {index_output_path}")
 
 
 def process_top_level_pages(config, jinja_env):
@@ -279,4 +283,4 @@ def process_top_level_pages(config, jinja_env):
             success = write_output_file(about_output_path, html_output)
             
             if success:
-                print(f"Built page: {about_output_path}")
+                zconsole.success(f"Built page: {about_output_path}")

@@ -28,6 +28,7 @@ setup(
         "Markdown>=3.3",
         "python-frontmatter>=1.0",
         "PyYAML>=5.4",
+        "rich>=14.0",
     ],
     entry_points={
         "console_scripts": [

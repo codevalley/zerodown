@@ -91,11 +91,11 @@
 <h3 id="inline-code">Inline Code</h3>
 <p>Use the <code>print()</code> function to output text.</p>
 <h3 id="code-blocks">Code Blocks</h3>
-<pre class="codehilite"><code class="language-python">def hello_world():
-    print(&quot;Hello, Zerodown!&quot;)
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">hello_world</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, Zerodown!&quot;</span><span class="p">)</span>
 
-hello_world()
-</code></pre>
+<span class="n">hello_world</span><span class="p">()</span>
+</code></pre></div>
 
 <h2 id="tables">Tables</h2>
 <table>
@@ -148,22 +148,22 @@ hello_world()
 <p><img alt="Local image" src="../assets/sample.jpg" /></p>
 <h3 id="navigation">Navigation</h3>
 <p>Navigation in Zerodown can be written in Markdown and will be properly converted to HTML:</p>
-<pre class="codehilite"><code class="language-markdown">&lt;nav class=&quot;main-nav&quot;&gt;&lt;ul&gt;
+<div class="codehilite"><pre><span></span><code>&lt;nav class=&quot;main-nav&quot;&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/posts/&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/about.html&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/nav&gt;
-</code></pre>
+</code></pre></div>
 
 <h3 id="frontmatter">Frontmatter</h3>
 <p>The YAML frontmatter at the top of each Markdown file provides metadata:</p>
-<pre class="codehilite"><code class="language-yaml">---
-title: My Post Title
-date: 2023-01-20
-author: Your Name
-tags: [tag1, tag2]
----
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Post Title</span>
+<span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2023-01-20</span>
+<span class="nt">author</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Your Name</span>
+<span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tag1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">tag2</span><span class="p p-Indicator">]</span>
+<span class="nn">---</span>
+</code></pre></div>
 
 <p>This metadata is available in templates and can be used for sorting, filtering, and displaying information about your content.</p>
 <h2 id="conclusion">Conclusion</h2>

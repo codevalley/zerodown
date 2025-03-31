@@ -11,10 +11,14 @@ from pathlib import Path
 from zerodown import __version__
 from zerodown.config import load_config, create_default_config
 from zerodown.builder import build_site
+from zerodown.console import zconsole
 
 
 def main():
     """Main entry point for the Zerodown CLI."""
+    zconsole.header(f"Zerodown v{__version__}")
+    zconsole.print("Zero effort markdown website generator")
+    
     parser = argparse.ArgumentParser(
         description="Zerodown - Zero effort markdown website generator"
     )
@@ -111,13 +115,13 @@ def init_site(path, template, config_format='yaml'):
     # Check if the template exists
     template_dir = examples_dir / template
     if not template_dir.exists():
-        print(f"ERROR: Template '{template}' not found")
+        zconsole.error(f"Template '{template}' not found")
         sys.exit(1)
     
     # Create the target directory if it doesn't exist
     target_dir = Path(path)
     if target_dir.exists() and any(target_dir.iterdir()):
-        print(f"ERROR: Directory '{path}' already exists and is not empty")
+        zconsole.error(f"Directory '{path}' already exists and is not empty")
         sys.exit(1)
     
     target_dir.mkdir(parents=True, exist_ok=True)
@@ -140,10 +144,10 @@ def init_site(path, template, config_format='yaml'):
         if not config_path.exists():
             create_default_config(str(config_path))
         
-        print(f"Initialized new Zerodown site at: {path}")
-        print("To build the site, run: zerodown build")
+        zconsole.success(f"Initialized new Zerodown site at: {path}")
+        zconsole.info("To build the site, run: zerodown build")
     except Exception as e:
-        print(f"ERROR: Failed to initialize site: {e}")
+        zconsole.error(f"Failed to initialize site: {e}")
         sys.exit(1)
 
 
@@ -180,13 +184,13 @@ def serve_site(port, config_path, site_path='.'):
                 super().__init__(*args, directory=config.OUTPUT_DIR, **kwargs)
         
         with socketserver.TCPServer(("", port), Handler) as httpd:
-            print(f"Serving at http://localhost:{port}")
-            print("Press Ctrl+C to stop")
+            zconsole.success(f"Serving at http://localhost:{port}")
+            zconsole.info("Press Ctrl+C to stop")
             httpd.serve_forever()
     except KeyboardInterrupt:
-        print("\nServer stopped")
+        zconsole.info("\nServer stopped")
     except Exception as e:
-        print(f"ERROR: Failed to start server: {e}")
+        zconsole.error(f"Failed to start server: {e}")
         sys.exit(1)
     finally:
         # Change back to the original directory

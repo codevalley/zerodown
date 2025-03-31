@@ -22,6 +22,7 @@ Zerodown is a lightning-fast, zero-configuration static site generator that tran
 - ⚡ **Fast builds**: Efficient processing for quick development cycles
 - 🗄️ **No database required**: Everything is stored as files
 - 🔌 **Zero configuration**: Works out of the box with sensible defaults
+- 🖥️ **Beautiful CLI**: Rich, colorful terminal output with progress tracking
 
 ## 🚀 Getting Started
 

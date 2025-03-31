@@ -60,18 +60,18 @@
 </ul>
 <h2 id="installation">Installation</h2>
 <p>Installing Zerodown is straightforward:</p>
-<pre class="codehilite"><code class="language-bash"># Clone the repository
-git clone https://github.com/yourusername/zerodown.git
+<div class="codehilite"><pre><span></span><code><span class="c1"># Clone the repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yourusername/zerodown.git
 
-# Navigate to the directory
-cd zerodown
+<span class="c1"># Navigate to the directory</span>
+<span class="nb">cd</span><span class="w"> </span>zerodown
 
-# Install dependencies
-pip install -r requirements.txt
+<span class="c1"># Install dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 
-# Install the package (optional)
-pip install -e .
-</code></pre>
+<span class="c1"># Install the package (optional)</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
 
 <h2 id="creating-your-first-site">Creating Your First Site</h2>
 <p>To create a new site, you can use one of the example templates:</p>
@@ -81,32 +81,32 @@ pip install -e .
 <li>Add your content to the <code>content</code> directory</li>
 <li>Run the build command:</li>
 </ol>
-<pre class="codehilite"><code class="language-bash">python -m zerodown build /path/to/your/site
-</code></pre>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>zerodown<span class="w"> </span>build<span class="w"> </span>/path/to/your/site
+</code></pre></div>
 
 <h2 id="writing-content">Writing Content</h2>
 <p>All content in Zerodown is written in Markdown with YAML frontmatter. Here's an example:</p>
-<pre class="codehilite"><code class="language-markdown">---
+<div class="codehilite"><pre><span></span><code>---
 title: My First Post
 date: 2023-01-15
 author: Your Name
-tags: [example, first-post]
----
+<span class="gu">tags: [example, first-post]</span>
+<span class="gu">---</span>
 
-# My First Post
+<span class="gh"># My First Post</span>
 
 This is my first post using Zerodown!
 
-## Subheading
+<span class="gu">## Subheading</span>
 
 You can use all standard Markdown features.
 
-- Lists
-- **Bold text**
-- *Italic text*
-- [Unknown shortcode: Links](https://example.com)
-- ![Unknown shortcode: Images](path/to/image.jpg)
-</code></pre>
+<span class="k">-</span><span class="w"> </span>Lists
+<span class="k">-</span><span class="w"> </span><span class="gs">**Bold text**</span>
+<span class="k">-</span><span class="w"> </span><span class="ge">*Italic text*</span>
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Links</span>](<span class="na">https://example.com</span>)
+<span class="k">-</span><span class="w"> </span>![<span class="nt">Images</span>](<span class="na">path/to/image.jpg</span>)
+</code></pre></div>
 
 <h2 id="next-steps">Next Steps</h2>
 <p>Now that you have the basics down, try:</p>
