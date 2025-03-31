@@ -1,0 +1,500 @@
+/* 
+ * Ultra-Minimal Portfolio Theme for Zerodown
+ * Inspired by sriramk.com
+ * No decorative elements, pure content focus
+ */
+
+:root {
+  /* Colors - Light theme (default) */
+  --background: #ffffff;
+  --text: #000000;
+  --secondary-text: #555555;
+  --link: #0066cc;
+  --link-hover: #004499;
+  --border: #eeeeee;
+  --code-bg: #f5f5f5;
+  
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
+  
+  /* Spacing */
+  --space-unit: 1rem;
+  --space-xs: calc(0.25 * var(--space-unit));
+  --space-s: calc(0.5 * var(--space-unit));
+  --space-m: calc(1 * var(--space-unit));
+  --space-l: calc(2 * var(--space-unit));
+  --space-xl: calc(3 * var(--space-unit));
+  
+  /* Layout */
+  --width-content: 580px;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111111;
+    --text: #f0f0f0;
+    --secondary-text: #aaaaaa;
+    --link: #5c93e5;
+    --link-hover: #80b0f0;
+    --border: #333333;
+    --code-bg: #222222;
+  }
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 15px;
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--background);
+  padding: var(--space-l) var(--space-m);
+  max-width: var(--width-content);
+  margin: 0 auto;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+  width: 100%;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  line-height: 1.3;
+  margin-top: var(--space-l);
+  margin-bottom: var(--space-s);
+}
+
+h1 {
+  font-size: 1.2rem;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.1rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+p, ul, ol {
+  margin-bottom: var(--space-m);
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--link-hover);
+}
+
+/* Remove all decorative elements */
+.highlight {
+  font-weight: normal;
+  color: var(--text);
+}
+
+/* Buttons - simplified to just links */
+.button {
+  display: inline;
+  color: var(--link);
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.button:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.button.primary, .button.secondary {
+  color: var(--link);
+}
+
+.button.primary:hover, .button.secondary:hover {
+  color: var(--link-hover);
+}
+
+/* Header */
+header {
+  margin-bottom: var(--space-l);
+}
+
+header .container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.site-title {
+  font-size: 1.2rem;
+  margin: 0;
+  margin-bottom: var(--space-s);
+}
+
+.site-title a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.site-description {
+  margin-bottom: var(--space-m);
+  color: var(--secondary-text);
+  font-size: 1rem;
+}
+
+/* Navigation */
+nav {
+  margin-top: var(--space-m);
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  flex-wrap: wrap;
+  gap: var(--space-m);
+}
+
+nav li {
+  margin: 0;
+}
+
+nav a {
+  color: var(--link);
+  font-weight: normal;
+}
+
+/* Main Content */
+main {
+  margin-bottom: var(--space-l);
+}
+
+/* Bio Section */
+.bio {
+  margin-bottom: var(--space-l);
+}
+
+.bio p {
+  font-size: 1rem;
+}
+
+/* Projects List */
+.projects-list {
+  list-style: none;
+}
+
+.projects-list li {
+  margin-bottom: var(--space-m);
+}
+
+.projects-list h3 {
+  font-size: 1rem;
+  margin-bottom: var(--space-xs);
+  margin-top: 0;
+}
+
+.projects-list p {
+  margin-bottom: var(--space-s);
+  color: var(--secondary-text);
+}
+
+/* Numbered List - like on sriramk.com */
+ol.numbered-list {
+  list-style: decimal;
+  padding-left: var(--space-l);
+}
+
+ol.numbered-list li {
+  margin-bottom: var(--space-s);
+  padding-left: var(--space-xs);
+}
+
+/* Project Grid - simplified to a list */
+.project-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  margin-top: var(--space-m);
+  margin-bottom: var(--space-l);
+}
+
+.project-card {
+  margin-bottom: var(--space-m);
+  background-color: var(--background);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.project-card:hover .project-card-title {
+  color: var(--link);
+}
+
+.project-card-image {
+  margin-bottom: var(--space-s);
+}
+
+.project-card-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.project-card-content {
+  padding: 0;
+}
+
+.project-card-title {
+  font-size: 1rem;
+  margin-bottom: var(--space-xs);
+  margin-top: 0;
+  font-weight: normal;
+}
+
+.project-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-s);
+  gap: var(--space-s);
+}
+
+.tag {
+  display: inline;
+  color: var(--secondary-text);
+  font-size: 0.9rem;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.tag:not(:last-child)::after {
+  content: ", ";
+}
+
+.project-card-description {
+  color: var(--secondary-text);
+  margin-bottom: var(--space-s);
+  font-size: 0.9rem;
+}
+
+/* Project Detail */
+.project {
+  margin-bottom: var(--space-l);
+}
+
+.project-header {
+  margin-bottom: var(--space-m);
+}
+
+.project-title {
+  font-size: 1.2rem;
+  margin-bottom: var(--space-s);
+  font-weight: normal;
+}
+
+.project-meta {
+  color: var(--secondary-text);
+  margin-bottom: var(--space-m);
+  font-size: 0.9rem;
+}
+
+.project-meta span {
+  margin-right: var(--space-m);
+}
+
+.project-content {
+  margin-bottom: var(--space-l);
+}
+
+.project-content img {
+  max-width: 100%;
+  height: auto;
+  margin: var(--space-m) 0;
+}
+
+/* Skills Section - simplified */
+.skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  margin-bottom: var(--space-l);
+}
+
+.skill-category {
+  margin-bottom: var(--space-m);
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.skill-category h3 {
+  font-size: 1rem;
+  font-weight: normal;
+  margin-bottom: var(--space-s);
+  color: var(--text);
+}
+
+.skill-category ul {
+  list-style: none;
+  margin-left: var(--space-m);
+}
+
+.skill-category li {
+  margin-bottom: var(--space-xs);
+  position: relative;
+  color: var(--secondary-text);
+  padding-left: 0;
+}
+
+.skill-category li:before {
+  content: '-';
+  position: absolute;
+  left: -1rem;
+  color: var(--secondary-text);
+}
+
+/* About Section - simplified */
+.about-preview {
+  padding: 0;
+  margin-bottom: var(--space-l);
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.about-image {
+  overflow: hidden;
+  border-radius: 0;
+}
+
+/* Contact Section - simplified */
+.contact-preview {
+  padding: 0;
+  margin-bottom: var(--space-l);
+  background: none;
+  color: var(--text);
+  text-align: left;
+}
+
+.contact-preview .section-title {
+  color: var(--text);
+}
+
+.contact-preview p {
+  margin-bottom: var(--space-m);
+  font-size: 1rem;
+}
+
+/* Footer - simplified */
+footer {
+  margin-top: var(--space-l);
+  padding-top: var(--space-m);
+  border-top: 1px solid var(--border);
+  color: var(--secondary-text);
+  font-size: 0.9rem;
+  background: none;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  margin-bottom: var(--space-m);
+}
+
+.footer-info h3, .footer-social h3 {
+  font-size: 1rem;
+  font-weight: normal;
+  margin-bottom: var(--space-s);
+  color: var(--text);
+}
+
+.social-links {
+  display: flex;
+  list-style: none;
+  gap: var(--space-m);
+}
+
+.social-links li {
+  margin: 0;
+}
+
+.social-links a {
+  color: var(--link);
+  text-decoration: none;
+  background: none;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  display: inline;
+}
+
+.social-links a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+  background: none;
+}
+
+.footer-bottom {
+  padding-top: var(--space-s);
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+  border-top: none;
+  text-align: left;
+}
+
+.footer-bottom a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    padding: var(--space-m);
+  }
+  
+  .container {
+    padding: 0;
+  }
+  
+  nav ul {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}

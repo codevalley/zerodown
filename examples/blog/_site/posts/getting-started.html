@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with Zerodown - My Zerodown Blog</title>
+    <meta name="description" content="A simple blog built with Zerodown">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="site-title"><a href="/">My Zerodown Blog</a></h1>
+            <nav>
+                <ul>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Getting Started with Zerodown</h1>
+        <div class="post-meta">
+            
+            <span class="post-date"><i class="far fa-calendar-alt"></i> January 15, 2023</span>
+            
+            
+            <span class="post-author"><i class="far fa-user"></i> Zerodown Team</span>
+            
+            
+            <span class="post-tags">
+                <i class="fas fa-tags"></i>
+                
+                <span class="tag">tutorial</span>
+                
+                <span class="tag">markdown</span>
+                
+                <span class="tag">zerodown</span>
+                
+            </span>
+            
+        </div>
+    </header>
+    
+    <div class="post-content">
+        <h1 id="getting-started-with-zerodown">Getting Started with Zerodown</h1>
+<p>Welcome to Zerodown, the zero-effort Markdown website generator! This post will guide you through the basics of setting up and using Zerodown for your own projects.</p>
+<h2 id="what-is-zerodown">What is Zerodown?</h2>
+<p>Zerodown is a simple static site generator that converts Markdown files into a beautiful website. It's designed to be easy to use, with minimal configuration required. Perfect for:</p>
+<ul>
+<li>Personal blogs</li>
+<li>Project documentation</li>
+<li>Portfolio websites</li>
+<li>Simple business sites</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>Installing Zerodown is straightforward:</p>
+<pre class="codehilite"><code class="language-bash"># Clone the repository
+git clone https://github.com/yourusername/zerodown.git
+
+# Navigate to the directory
+cd zerodown
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install the package (optional)
+pip install -e .
+</code></pre>
+
+<h2 id="creating-your-first-site">Creating Your First Site</h2>
+<p>To create a new site, you can use one of the example templates:</p>
+<ol>
+<li>Copy an example directory (like <code>examples/blog</code>) to your desired location</li>
+<li>Modify the <code>config.py</code> file to match your site details</li>
+<li>Add your content to the <code>content</code> directory</li>
+<li>Run the build command:</li>
+</ol>
+<pre class="codehilite"><code class="language-bash">python -m zerodown build /path/to/your/site
+</code></pre>
+
+<h2 id="writing-content">Writing Content</h2>
+<p>All content in Zerodown is written in Markdown with YAML frontmatter. Here's an example:</p>
+<pre class="codehilite"><code class="language-markdown">---
+title: My First Post
+date: 2023-01-15
+author: Your Name
+tags: [example, first-post]
+---
+
+# My First Post
+
+This is my first post using Zerodown!
+
+## Subheading
+
+You can use all standard Markdown features.
+
+- Lists
+- **Bold text**
+- *Italic text*
+- [Links](https://example.com)
+- ![Images](path/to/image.jpg)
+</code></pre>
+
+<h2 id="next-steps">Next Steps</h2>
+<p>Now that you have the basics down, try:</p>
+<ul>
+<li>Customizing the CSS to match your brand</li>
+<li>Adding new sections to your site</li>
+<li>Creating custom templates</li>
+<li>Deploying your site to GitHub Pages or Netlify</li>
+</ul>
+<p>Happy building with Zerodown!</p>
+    </div>
+    
+    <footer class="post-footer">
+        <div class="post-navigation">
+            <!-- Navigation between posts could be added here -->
+        </div>
+    </footer>
+</article>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 My Zerodown Blog. Built with <a href="https://github.com/yourusername/zerodown">Zerodown</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>

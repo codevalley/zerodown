@@ -2,20 +2,21 @@
 
 {% block content %}
 <section>
-    {% if home_html is defined %}
-        {{ home_html | safe }}
+    {% if home_content is defined %}
+        <h2>{{ home_content.metadata.title }}</h2>
+        {{ home_content.content_html | safe }}
     {% else %}
         <h2>Welcome</h2>
         <p>{{ config.SITE_DESCRIPTION }}</p>
-    {% endif %}
-    
-    {% if config.SECTIONS %}
-    <p>Explore the sections:</p>
-    <ul>
-        {% for section_key, section_config in config.SECTIONS.items() %}
-        <li><a href="/{{ section_key }}/">{{ section_config.title }}</a></li>
-        {% endfor %}
-    </ul>
+        
+        {% if config.SECTIONS %}
+        <p>Explore the sections:</p>
+        <ul>
+            {% for section_key, section_config in config.SECTIONS.items() %}
+            <li><a href="/{{ section_key }}/">{{ section_config.title }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     {% endif %}
 
     {# Optional: Display latest items across all sections #}

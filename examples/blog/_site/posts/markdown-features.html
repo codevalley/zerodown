@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Features in Zerodown - My Zerodown Blog</title>
+    <meta name="description" content="A simple blog built with Zerodown">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="site-title"><a href="/">My Zerodown Blog</a></h1>
+            <nav>
+                <ul>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Markdown Features in Zerodown</h1>
+        <div class="post-meta">
+            
+            <span class="post-date"><i class="far fa-calendar-alt"></i> January 20, 2023</span>
+            
+            
+            <span class="post-author"><i class="far fa-user"></i> Zerodown Team</span>
+            
+            
+            <span class="post-tags">
+                <i class="fas fa-tags"></i>
+                
+                <span class="tag">markdown</span>
+                
+                <span class="tag">features</span>
+                
+                <span class="tag">tutorial</span>
+                
+            </span>
+            
+        </div>
+    </header>
+    
+    <div class="post-content">
+        <h1 id="markdown-features-in-zerodown">Markdown Features in Zerodown</h1>
+<p>Zerodown supports all standard Markdown features plus some additional enhancements. This post showcases the various Markdown elements you can use in your content.</p>
+<h2 id="basic-formatting">Basic Formatting</h2>
+<p>Markdown makes it easy to format your text:</p>
+<p><strong>Bold text</strong> is created with double asterisks.</p>
+<p><em>Italic text</em> uses single asterisks.</p>
+<p><strong><em>Bold and italic</em></strong> combines both.</p>
+<p>~~Strikethrough~~ uses double tildes.</p>
+<h2 id="lists">Lists</h2>
+<h3 id="unordered-lists">Unordered Lists</h3>
+<ul>
+<li>Item 1</li>
+<li>Item 2</li>
+<li>Nested item 2.1</li>
+<li>Nested item 2.2</li>
+<li>Item 3</li>
+</ul>
+<h3 id="ordered-lists">Ordered Lists</h3>
+<ol>
+<li>First item</li>
+<li>Second item</li>
+<li>Third item</li>
+<li>Nested item 3.1</li>
+<li>Nested item 3.2</li>
+</ol>
+<h2 id="links-and-images">Links and Images</h2>
+<h3 id="links">Links</h3>
+<p><a href="https://www.google.com">External link to Google</a></p>
+<p><a href="/about.html">Link to another page</a></p>
+<h3 id="images">Images</h3>
+<p><img alt="Sample image" src="https://via.placeholder.com/600x400" /></p>
+<h2 id="blockquotes">Blockquotes</h2>
+<blockquote>
+<p>This is a blockquote.</p>
+<p>It can span multiple lines.</p>
+<blockquote>
+<p>And can be nested.</p>
+</blockquote>
+</blockquote>
+<h2 id="code">Code</h2>
+<h3 id="inline-code">Inline Code</h3>
+<p>Use the <code>print()</code> function to output text.</p>
+<h3 id="code-blocks">Code Blocks</h3>
+<pre class="codehilite"><code class="language-python">def hello_world():
+    print(&quot;Hello, Zerodown!&quot;)
+
+hello_world()
+</code></pre>
+
+<h2 id="tables">Tables</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Age</th>
+<th>Occupation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>John</td>
+<td>32</td>
+<td>Developer</td>
+</tr>
+<tr>
+<td>Sarah</td>
+<td>28</td>
+<td>Designer</td>
+</tr>
+<tr>
+<td>Michael</td>
+<td>45</td>
+<td>Project Manager</td>
+</tr>
+</tbody>
+</table>
+<h2 id="horizontal-rules">Horizontal Rules</h2>
+<p>Three hyphens create a horizontal rule:</p>
+<hr />
+<h2 id="task-lists">Task Lists</h2>
+<ul>
+<li>[x] Create a Zerodown site</li>
+<li>[x] Write documentation</li>
+<li>[ ] Deploy to production</li>
+</ul>
+<h2 id="footnotes">Footnotes</h2>
+<p>Here's a sentence with a footnote<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.</p>
+<h2 id="headings">Headings</h2>
+<h1 id="heading-1">Heading 1</h1>
+<h2 id="heading-2">Heading 2</h2>
+<h3 id="heading-3">Heading 3</h3>
+<h4 id="heading-4">Heading 4</h4>
+<h5 id="heading-5">Heading 5</h5>
+<h6 id="heading-6">Heading 6</h6>
+<h2 id="special-features-in-zerodown">Special Features in Zerodown</h2>
+<h3 id="asset-handling">Asset Handling</h3>
+<p>In Zerodown, you can link to assets using relative paths, and they'll be automatically adjusted in the final site:</p>
+<p><img alt="Local image" src="../assets/sample.jpg" /></p>
+<h3 id="navigation">Navigation</h3>
+<p>Navigation in Zerodown can be written in Markdown and will be properly converted to HTML:</p>
+<pre class="codehilite"><code class="language-markdown">&lt;nav class=&quot;main-nav&quot;&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/posts/&quot;&gt;Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/about.html&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/nav&gt;
+</code></pre>
+
+<h3 id="frontmatter">Frontmatter</h3>
+<p>The YAML frontmatter at the top of each Markdown file provides metadata:</p>
+<pre class="codehilite"><code class="language-yaml">---
+title: My Post Title
+date: 2023-01-20
+author: Your Name
+tags: [tag1, tag2]
+---
+</code></pre>
+
+<p>This metadata is available in templates and can be used for sorting, filtering, and displaying information about your content.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>With Zerodown's Markdown support, you can create rich, well-formatted content without needing to write HTML. Focus on your writing, and let Zerodown handle the presentation!</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>This is the footnote content.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    
+    <footer class="post-footer">
+        <div class="post-navigation">
+            <!-- Navigation between posts could be added here -->
+        </div>
+    </footer>
+</article>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 My Zerodown Blog. Built with <a href="https://github.com/yourusername/zerodown">Zerodown</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>

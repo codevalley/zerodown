@@ -17,7 +17,7 @@ STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "_site")
 
 # Theme settings
-THEME_CSS_FILE = "portfolio.css"  # The CSS file to use from the styles directory
+THEME_CSS_FILE = "portfolio-minimal.css"  # The CSS file to use from the styles directory
 
 # Content sections
 SECTIONS = {

@@ -13,7 +13,7 @@ static_dir: static
 output_dir: _site
 
 # Theme settings
-theme_css_file: portfolio.css  # The CSS file to use from the styles directory
+theme_css_file: portfolio-minimal.css  # The CSS file to use from the styles directory
 
 # Content sections
 sections:

@@ -1,12 +1,37 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <meta name="description" content="A showcase of my work and skills">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1 class="site-title"><a href="/">My Portfolio</a></h1>
+            </div>
+            <nav>
+                <ul>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-{% block content %}
-{% if home_content is defined %}
+    <main>
+        
+
 <section class="hero">
     <div class="container">
         <div class="hero-content">
-            <h1>{{ home_content.metadata.title }}</h1>
-            {{ home_content.content_html | safe }}
+            <h1>Hello, I&#39;m Your Name</h1>
+            <p>I'm a designer and developer focused on creating clean, functional digital experiences.</p>
+<p>This portfolio site is built with Zerodown, inspired by the minimalist aesthetic of sriramk.com. The design emphasizes content and readability with a clean, distraction-free layout.</p>
+<p>Dark mode is automatically enabled based on your system preferences for comfortable viewing at any time of day.</p>
             <div class="hero-buttons">
                 <a href="/projects/" class="button primary">View My Work</a>
                 <a href="/contact.html" class="button secondary">Contact Me</a>
@@ -14,73 +39,28 @@
         </div>
     </div>
 </section>
-{% else %}
-<section class="hero">
-    <div class="container">
-        <div class="hero-content">
-            <h1>Hello, I'm <span class="highlight">Your Name</span></h1>
-            <p class="lead">{{ config.SITE_DESCRIPTION }}</p>
-            <div class="hero-buttons">
-                <a href="/projects/" class="button primary">View My Work</a>
-                <a href="/contact.html" class="button secondary">Contact Me</a>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
+
 
 <section class="featured-projects">
     <div class="container">
         <h2 class="section-title">Featured Projects</h2>
         
-        {% if latest_items %}
-            {% set projects = [] %}
-            {% for item in latest_items %}
-                {% if item.section_key == 'projects' and item.metadata.featured %}
-                    {% set projects = projects + [item] %}
-                {% endif %}
-            {% endfor %}
+        
             
-            {% if projects %}
-                <div class="project-grid featured">
-                    {% for project in projects[:3] %}
-                    <div class="project-card">
-                        {% if project.metadata.image %}
-                        <div class="project-card-image">
-                            <a href="{{ project.url }}">
-                                <img src="{{ project.metadata.image }}" alt="{{ project.metadata.title }}">
-                            </a>
-                        </div>
-                        {% endif %}
-                        
-                        <div class="project-card-content">
-                            <h3 class="project-card-title">
-                                <a href="{{ project.url }}">{{ project.metadata.title }}</a>
-                            </h3>
-                            
-                            <div class="project-card-description">
-                                {% if project.metadata.summary %}
-                                    {{ project.metadata.summary }}
-                                {% else %}
-                                    {{ project.content_html | striptags | truncate(100) | safe }}
-                                {% endif %}
-                            </div>
-                            
-                            <a href="{{ project.url }}" class="read-more">View Project <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+            
                 
-                <div class="view-all">
-                    <a href="/projects/" class="button">View All Projects</a>
-                </div>
-            {% else %}
+                    
+                
+            
+                
+                    
+                
+            
+            
+            
                 <p>No featured projects found. Mark projects as featured by adding <code>featured: true</code> to their frontmatter.</p>
-            {% endif %}
-        {% else %}
-            <p>No projects found.</p>
-        {% endif %}
+            
+        
     </section>
 
 <section class="skills">
@@ -126,12 +106,10 @@
         <div class="about-content">
             <div class="about-text">
                 <h2 class="section-title">About Me</h2>
-                {% if about_html %}
-                    {{ about_html | safe }}
-                {% else %}
+                
                     <p>I'm a passionate developer and designer with a focus on creating beautiful, functional websites and applications. With over 5 years of experience in the industry, I've worked on a variety of projects from small business websites to complex web applications.</p>
                     <p>I believe in clean code, user-centered design, and continuous learning.</p>
-                {% endif %}
+                
                 <a href="/about.html" class="button">Learn More About Me</a>
             </div>
             <div class="about-image">
@@ -148,4 +126,30 @@
         <a href="/contact.html" class="button primary">Contact Me</a>
     </div>
 </section>
-{% endblock %}
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>My Portfolio</h3>
+                    <p>A showcase of my work and skills</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect</h3>
+                    <ul class="social-links">
+                        <li><a href="#"><i class="fab fa-github"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 My Portfolio. Built with <a href="https://github.com/yourusername/zerodown">Zerodown</a>.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

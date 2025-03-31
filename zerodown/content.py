@@ -200,6 +200,23 @@ def build_homepage(config, jinja_env, all_items):
         "latest_items": all_items  # Pass all items for potential use on homepage
     }
     
+    # Look for a home.md file in the content directory (preferred approach)
+    home_md_path = os.path.join(config.CONTENT_DIR, "home.md")
+    if os.path.isfile(home_md_path):
+        # Parse the home.md file
+        home_content = parse_markdown_file(
+            home_md_path,
+            output_path=index_output_path,
+            base_url=config.BASE_URL
+        )
+        if home_content:
+            # Add the parsed home content to the context
+            context["home_content"] = home_content
+            
+            # For backward compatibility, also provide home_html
+            if "home_html" not in context and "content_html" in home_content:
+                context["home_html"] = home_content["content_html"]
+    
     html_output = render_template(jinja_env, "index.html", context)
     success = write_output_file(index_output_path, html_output)
     

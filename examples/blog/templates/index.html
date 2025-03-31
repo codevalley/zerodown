@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if home_content is defined %}
+<section class="hero">
+    <h1>{{ home_content.metadata.title }}</h1>
+    {{ home_content.content_html | safe }}
+</section>
+{% else %}
 <section class="hero">
     <h1>Welcome to {{ config.SITE_NAME }}</h1>
     <p class="lead">{{ config.SITE_DESCRIPTION }}</p>
 </section>
+{% endif %}
 
 <section class="latest-posts">
     <h2>Latest Posts</h2>
