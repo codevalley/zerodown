@@ -13,7 +13,7 @@ STYLES_DIR = "styles"
 OUTPUT_DIR = "public"
 
 # Theme configuration
-THEME_CSS_FILE = "dark-theme.css"  # Change this to use a different theme file
+THEME_CSS_FILE = "main.css"  # Change this to use a different theme file
 # ADDITIONAL_CSS_FILES = ["syntax-highlighting.css"]  # Uncomment to include additional CSS files
 
 # Define the sections of your site based on folders in 'content/'

@@ -9,7 +9,21 @@
     --link-hover-color: #205cbc;
     --border-color: #eee;
     --light-gray: #f5f5f5;
+    --code-bg: #f5f5f5;
     --max-width: 650px;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #f0f0f0;
+        --bg-color: #111;
+        --link-color: #5c93e5;
+        --link-hover-color: #80b0f0;
+        --border-color: #333;
+        --light-gray: #222;
+        --code-bg: #222;
+    }
 }
 
 body {

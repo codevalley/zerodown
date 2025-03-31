@@ -14,7 +14,7 @@ styles_dir: styles
 output_dir: public
 
 # Theme settings
-theme_css_file: dark-theme.css  # Change this to use a different theme file
+theme_css_file: main.css  # Change this to use a different theme file
 
 # Content sections
 sections:
