@@ -6,10 +6,12 @@ This is a minimalist site created with Zerodown, inspired by patrickcollison.com
 
 ## Explore the Site
 
-This site demonstrates a clean, simple design with excellent readability and minimal distractions. You can explore the following sections:
+This site demonstrates a clean, simple design with excellent readability and minimal distractions.
 
-- **Notes**: Short thoughts and observations
-- **Projects**: A showcase of my work
-- **Links**: Interesting resources from around the web
+[section_list]
+
+## Latest Notes
+
+[latest_posts count="3" section="notes"]
 
 The content is written in Markdown, making it easy to maintain and update.

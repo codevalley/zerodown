@@ -8,4 +8,12 @@ This is a personal blog created with Zerodown, inspired by frankchimero.com. Her
 
 The site features a clean, readable design with a focus on typography and content. Dark mode is automatically enabled based on your system preferences.
 
-Feel free to explore my latest posts below or browse through the archives to discover more content.
+## Latest Posts
+
+[latest_posts count="1" section="posts"]
+
+## Explore Sections
+
+[section_list]
+
+Feel free to explore my latest posts above or browse through all sections to discover more content.

@@ -61,11 +61,20 @@ def process_section(config, jinja_env, section_key, section_config, all_items):
                 output_filename = os.path.splitext(filename)[0] + '.html'
                 output_path = os.path.join(section_output_dir, output_filename)
                 
-                # Parse the markdown file with asset handling
+                # Create context for shortcode processing
+                item_context = {
+                    "config": config,
+                    "section_key": section_key,
+                    "section_config": section_config,
+                    "latest_items": all_items  # Pass existing items for dynamic content
+                }
+                
+                # Parse the markdown file with asset handling and shortcode processing
                 parsed_item = parse_markdown_file(
                     filepath, 
                     output_path=output_path, 
-                    base_url=config.BASE_URL
+                    base_url=config.BASE_URL,
+                    context=item_context
                 )
                 
                 if parsed_item:  # Check if parsing succeeded
@@ -197,17 +206,19 @@ def build_homepage(config, jinja_env, all_items):
     context = {
         "title": config.SITE_NAME,
         "description": config.SITE_DESCRIPTION,
-        "latest_items": all_items  # Pass all items for potential use on homepage
+        "latest_items": all_items,  # Pass all items for potential use on homepage
+        "config": config  # Pass the entire config object for shortcodes
     }
     
     # Look for a home.md file in the content directory (preferred approach)
     home_md_path = os.path.join(config.CONTENT_DIR, "home.md")
     if os.path.isfile(home_md_path):
-        # Parse the home.md file
+        # Parse the home.md file with context for shortcodes
         home_content = parse_markdown_file(
             home_md_path,
             output_path=index_output_path,
-            base_url=config.BASE_URL
+            base_url=config.BASE_URL,
+            context=context  # Pass context for shortcode processing
         )
         if home_content:
             # Add the parsed home content to the context
@@ -239,11 +250,18 @@ def process_top_level_pages(config, jinja_env):
         # Determine the output path
         about_output_path = os.path.join(config.OUTPUT_DIR, "about.html")
         
-        # Parse the markdown file with asset handling
+        # Create context for the page
+        context = {
+            "title": "About",
+            "config": config
+        }
+        
+        # Parse the markdown file with asset handling and shortcode processing
         about_item = parse_markdown_file(
             about_md_path, 
             output_path=about_output_path, 
-            base_url=config.BASE_URL
+            base_url=config.BASE_URL,
+            context=context  # Pass context for shortcode processing
         )
         
         if about_item:

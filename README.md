@@ -101,8 +101,9 @@ If you just want to try Zerodown without installing it:
 3. **Add content**:
    - 📄 Place Markdown files in the `content/` directory
    - 📂 Organize content into sections (e.g., `content/notes/`, `content/projects/`)
-   - 🧩 Add global elements in `content/_includes/` (header, footer, homepage)
+   - 🧩 Add reusable content fragments in `content/_includes/` (e.g., `bio.md`, `contact-info.md`)
    - 🖼️ Store images and other assets in `content/assets/`
+   - 🏠 Create `content/home.md` for your homepage content with shortcodes
 
 4. **Customize templates**:
    - 🖌️ Edit HTML templates in the `templates/` directory
@@ -130,17 +131,37 @@ If you just want to try Zerodown without installing it:
 ## 📂 Content Structure
 
 ```
-content/
-├── _includes/         # Global content elements
-│   ├── header.md      # Site header with navigation
-│   ├── footer.md      # Site footer
-│   └── home.md        # Homepage content
-├── assets/            # Images and other files
-│   └── ...
-├── notes/             # Example section
-│   ├── first-note.md
-│   └── ...
-└── about.md           # Top-level page
+your-site/
+├── config.yaml        # Site configuration
+├── content/           # All your Markdown content
+│   ├── home.md        # Homepage content with shortcodes
+│   ├── about.md       # Top-level pages
+│   ├── _includes/     # Reusable content fragments
+│   │   └── bio.md     # Can be included in other pages with {% include "bio.md" %}
+│   ├── assets/        # Images and other files
+│   │   └── ...
+│   ├── posts/         # Content section (defined in config)
+│   │   ├── post1.md   # Individual content items
+│   │   └── post2.md
+│   └── projects/      # Another content section (defined in config)
+│       ├── project1.md # Individual content items
+│       └── project2.md
+├── templates/         # HTML templates
+│   ├── base.html      # Base template with common elements
+│   ├── index.html     # Homepage template
+│   ├── post.html      # Template for individual posts
+│   └── post_list.html # Template for section index pages
+├── styles/            # CSS styles
+│   └── main.css       # Main stylesheet
+└── _site/             # Generated output (created by build)
+    ├── index.html     # Generated homepage
+    ├── about.html     # Generated top-level pages
+    ├── posts/         # Generated section directories
+    │   ├── index.html # Section index page
+    │   ├── post1.html # Generated content pages
+    │   └── post2.md.html
+    ├── styles/        # Copied and processed styles
+    └── assets/        # Copied assets
 ```
 
 > 💡 **Tip**: The structure is flexible—organize your content in a way that makes sense for your project!
@@ -156,6 +177,8 @@ Each Markdown file can include metadata at the top:
 title: "My First Post"
 date: 2025-03-29
 description: "This is my first post"
+featured: true        # Can be used to mark featured content
+image: "hero.jpg"     # Featured image for the content
 ---
 
 # Content starts here
@@ -171,6 +194,115 @@ You can use standard Markdown syntax for links and images:
 ```
 
 Zerodown automatically adjusts paths to work correctly in the final site. No more broken links! 🎉
+
+### 🧩 Shortcodes
+
+Shortcodes allow you to include dynamic content directly in your Markdown files:
+
+```markdown
+## Latest Posts
+[latest_posts count="3" section="posts"]
+
+## Explore Sections
+[section_list]
+
+## Featured Content
+[featured_items count="2"]
+```
+
+#### Available Shortcodes
+
+- **`[latest_posts]`**: Displays the latest posts from a section
+  - `count`: Number of posts to display (default: 3)
+  - `section`: Section key to get posts from (default: "posts")
+
+- **`[section_list]`**: Lists all sections or items in a section
+  - `section`: Optional section key to list items from
+
+- **`[featured_items]`**: Displays content items marked as featured in their frontmatter
+  - `count`: Number of items to display (default: 3)
+  - `section`: Optional section key to limit featured items to a specific section
+
+> 💡 **Philosophy**: Shortcodes keep all content decisions in Markdown files while templates remain purely structural, maintaining a clean separation of concerns.
+
+## 📟 How Zerodown Works
+
+Zerodown follows a clean, modular approach to generate static sites from your Markdown content. Here's how it works:
+
+```
++----------------+     +----------------+     +----------------+
+|                |     |                |     |                |
+|  Configuration  +---->+  Content Files +---->+  Templates     |
+|  (config.yaml) |     |  (Markdown)    |     |  (HTML/Jinja2) |
+|                |     |                |     |                |
++-------+--------+     +--------+-------+     +-------+--------+
+        |                       |                     |
+        |                       |                     |
+        v                       v                     v
++-------+---------------------------------------------+--------+
+|                                                              |
+|                      Build Process                           |
+|                                                              |
+|  1. Load configuration                                       |
+|  2. Set up template environment                              |
+|  3. Process includes and assets                              |
+|  4. Process content sections                                 |
+|     - Parse Markdown files (with shortcodes)                 |
+|     - Build individual pages                                 |
+|     - Build section index pages                              |
+|  5. Build homepage and top-level pages                       |
+|  6. Copy static assets and styles                            |
+|                                                              |
++-------------------------------+------------------------------+
+                                |
+                                |
+                                v
+                    +-----------+-----------+
+                    |                       |
+                    |    Generated Site     |
+                    |    (_site directory)  |
+                    |                       |
+                    +-----------------------+
+```
+
+### Build Process in Detail
+
+1. **Configuration Loading**:
+   - Load settings from `config.yaml` or `config.py`
+   - Set up paths, site information, and section definitions
+
+2. **Template Setup**:
+   - Initialize Jinja2 environment with the template directory
+   - Register custom filters and functions
+
+3. **Content Processing**:
+   - Process `_includes` directory for reusable content fragments
+   - For each content section defined in the config:
+     - Find all Markdown files in the section directory
+     - Parse frontmatter metadata
+     - Convert Markdown to HTML
+     - Process shortcodes (like `[latest_posts]` or `[section_list]`)
+     - Apply the appropriate template
+     - Generate individual pages and section index pages
+
+4. **Asset Handling**:
+   - Copy static assets from `static/` to the output directory
+   - Process and copy CSS from `styles/` to the output directory
+   - Fix relative paths in links and image sources
+
+5. **Output Generation**:
+   - Write all processed files to the `_site/` directory
+   - Maintain the directory structure for sections
+
+### Philosophy
+
+Zerodown follows these core principles:
+
+1. **Content/Code Separation**: All content lives in Markdown files, all presentation logic in templates
+2. **No Content Opinions in Templates**: Templates should be purely structural with no hardcoded content
+3. **Dynamic Content via Shortcodes**: Use shortcodes in Markdown to include dynamic elements
+4. **Simplicity First**: Sensible defaults that work out of the box
+5. **Flexibility**: Easy to customize for different site types
 
 ## 🚀 Deployment
 
@@ -195,16 +327,38 @@ YAML configuration is simpler and more user-friendly, perfect for non-technical 
 
 ```yaml
 # config.yaml
+# Site information
 site_name: My Website
 site_description: A beautiful static site
+base_url: /  # Use "/" for local development, or your domain for production
+
+# Directory paths
+content_dir: content
+template_dir: templates
+styles_dir: styles
+static_dir: static
+output_dir: _site
+
+# Theme settings
+theme_css_file: main.css  # The CSS file to use from the styles directory
 
 # Content sections
 sections:
   posts:
     title: Blog Posts
-    template: post.html
-    sort_by: date
-    reverse_sort: true
+    template: post.html         # Template for individual posts
+    list_template: post_list.html  # Template for the section index page
+    sort_by: date               # Sort items by this metadata field
+    reverse_sort: true          # Sort in reverse order (newest first)
+
+# Navigation items
+nav_items:
+  - title: Home
+    url: /
+  - title: Blog
+    url: /posts/
+  - title: About
+    url: /about.html
 ```
 
 #### Python Configuration
@@ -213,18 +367,38 @@ Python configuration offers more flexibility for advanced users:
 
 ```python
 # config.py
+# Site information
 SITE_NAME = "My Website"
 SITE_DESCRIPTION = "A beautiful static site"
+BASE_URL = "/"  # Use "/" for local development, or your domain for production
+
+# Directory paths
+CONTENT_DIR = "content"
+TEMPLATE_DIR = "templates"
+STYLES_DIR = "styles"
+STATIC_DIR = "static"
+OUTPUT_DIR = "_site"
+
+# Theme settings
+THEME_CSS_FILE = "main.css"  # The CSS file to use from the styles directory
 
 # Content sections
 SECTIONS = {
     "posts": {
         "title": "Blog Posts",
         "template": "post.html",
+        "list_template": "post_list.html",
         "sort_by": "date",
         "reverse_sort": True
     }
 }
+
+# Navigation items
+NAV_ITEMS = [
+    {"title": "Home", "url": "/"},
+    {"title": "Blog", "url": "/posts/"},
+    {"title": "About", "url": "/about.html"}
+]
 ```
 
 > 💡 **Note**: When both `config.yaml` and `config.py` exist, the YAML configuration takes precedence.
@@ -238,6 +412,8 @@ SECTIONS = {
    sections:
      projects:
        title: Projects
+       template: project.html      # Template for individual items
+       list_template: project_list.html  # Template for section index
        sort_by: date
        reverse_sort: true
    ```
@@ -246,8 +422,10 @@ SECTIONS = {
    ```python
    "projects": {
        "title": "Projects",
+       "template": "project.html",
+       "list_template": "project_list.html",
        "sort_by": "date",
-       "reverse": True
+       "reverse_sort": True
    }
    ```
 

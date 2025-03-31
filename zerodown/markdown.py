@@ -10,6 +10,7 @@ import markdown
 from markdown.extensions.wikilinks import WikiLinkExtension
 from markdown.treeprocessors import Treeprocessor
 from markdown.extensions import Extension
+from zerodown.shortcodes import process_shortcodes
 
 
 class AssetProcessor(Treeprocessor):
@@ -107,7 +108,7 @@ class AssetExtension(Extension):
         )
 
 
-def parse_markdown_file(filepath, output_path=None, base_url=None):
+def parse_markdown_file(filepath, output_path=None, base_url=None, context=None):
     """
     Parses a Markdown file, extracting front matter and converting content.
     Also processes links and assets to work correctly in the final site.
@@ -116,6 +117,7 @@ def parse_markdown_file(filepath, output_path=None, base_url=None):
         filepath: Path to the Markdown file
         output_path: Path where the HTML will be output (for link adjustment)
         base_url: Base URL of the site (for link adjustment)
+        context: Context dictionary for shortcode processing
         
     Returns:
         dict: Dictionary with metadata, HTML content, filepath, and slug
@@ -126,8 +128,8 @@ def parse_markdown_file(filepath, output_path=None, base_url=None):
         # Get the content
         content = post.content
         
-        # Convert Markdown to HTML with asset processing
-        html_content = convert_markdown_to_html(content, filepath, output_path, base_url)
+        # Convert Markdown to HTML with asset processing and shortcode processing
+        html_content = convert_markdown_to_html(content, filepath, output_path, base_url, context)
         
         # Ensure date is a Python date object if present
         if 'date' in post.metadata and not isinstance(post.metadata['date'], datetime.date):
@@ -224,15 +226,16 @@ def process_nav_content(content):
     return re.sub(nav_pattern, nav_replacement, content, flags=re.DOTALL)
 
 
-def convert_markdown_to_html(content, source_path=None, output_path=None, base_url=None):
+def convert_markdown_to_html(content, source_path=None, output_path=None, base_url=None, context=None):
     """
-    Converts Markdown content to HTML with optional asset processing.
+    Converts Markdown content to HTML with optional asset processing and shortcode processing.
     
     Args:
         content: Markdown content string
         source_path: Path to the source file (for link adjustment)
         output_path: Path where the HTML will be output (for link adjustment)
         base_url: Base URL of the site (for link adjustment)
+        context: Context dictionary for shortcode processing
         
     Returns:
         str: HTML content
@@ -256,6 +259,10 @@ def convert_markdown_to_html(content, source_path=None, output_path=None, base_u
     
     # Convert Markdown to HTML
     html_content = markdown.markdown(content, extensions=extensions)
+    
+    # Process shortcodes if context is provided
+    if context:
+        html_content = process_shortcodes(html_content, context)
     
     return html_content
 
