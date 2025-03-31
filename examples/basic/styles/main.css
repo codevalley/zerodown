@@ -232,11 +232,13 @@ blockquote {
 }
 
 img {
-    max-width: 100%;
-    height: auto;
+    max-width: 650px; /* Limit width to content width */
+    width: 100%; /* Make images responsive */
+    height: auto; /* Maintain aspect ratio */
     display: block;
     margin: 1.5em auto; /* Center images */
     border-radius: 4px; /* Optional subtle rounding */
+    object-fit: contain; /* Maintain aspect ratio */
 }
 
 /* Table styling */

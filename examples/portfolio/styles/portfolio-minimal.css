@@ -329,6 +329,19 @@ ol.numbered-list li {
   max-width: 100%;
   height: auto;
   margin: var(--space-m) 0;
+  width: auto; /* Allow images to maintain aspect ratio */
+}
+
+/* Featured image styling */
+.project-featured-image {
+  margin-bottom: var(--space-m);
+}
+
+.project-featured-image img {
+  max-width: 600px; /* Limit width to a reasonable size */
+  width: 100%; /* Make images responsive */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: contain; /* Ensure proper scaling */
 }
 
 /* Skills Section - simplified */

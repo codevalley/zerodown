@@ -195,6 +195,20 @@ You can use standard Markdown syntax for links and images:
 
 Zerodown automatically adjusts paths to work correctly in the final site. No more broken links! 🎉
 
+#### 📐 Image Dimensions
+
+You can specify image dimensions directly in your Markdown using a special syntax in the alt text:
+
+```markdown
+![Image description {width=300 height=200}](../assets/image.png)
+```
+
+This will set the width to 300px and height to 200px in the generated HTML. You can specify either width, height, or both. If dimensions aren't specified, images will be responsively sized with sensible defaults:
+
+- Images will be limited to the content width
+- Aspect ratio will be maintained
+- Images will be centered in the content area
+
 ### 🧩 Shortcodes
 
 Shortcodes allow you to include dynamic content directly in your Markdown files:

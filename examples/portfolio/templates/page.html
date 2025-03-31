@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <article class="page-content">
+        <header class="page-header">
+            <h1 class="page-title">{{ item.metadata.title }}</h1>
+        </header>
+        
+        {% if item.metadata.image %}
+        <div class="page-featured-image">
+            <img src="{{ item.metadata.image }}" alt="{{ item.metadata.title }}">
+        </div>
+        {% endif %}
+        
+        <div class="page-content">
+            {{ item.content_html | safe }}
+        </div>
+        
+        <footer class="page-footer">
+            <div class="page-navigation">
+                <a href="/" class="back-button"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </footer>
+    </article>
+</div>
+{% endblock %}

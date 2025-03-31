@@ -5,7 +5,7 @@ date: 2023-05-20
 order: 2
 featured: true
 tags: [Mobile App, UI/UX, React Native]
-image: /assets/project2.jpg
+image: /assets/project4.png
 summary: A cross-platform mobile app for fitness tracking with personalized workout plans and nutrition guidance.
 link: https://example.com/fitlife
 ---

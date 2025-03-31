@@ -10,4 +10,4 @@ What is it?
 
 So I asked ChatGPT and asked it to represent it in the form of a comic, this is what I got.
 
-![Chat Brain](../assets/chatbrain.jpeg)
+![Chat Brain {width=600 height=400}](../assets/chatbrain.jpeg)

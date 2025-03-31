@@ -343,10 +343,13 @@ footer {
 }
 
 .post-content img {
-  max-width: 100%;
-  height: auto;
-  margin: 1.5rem 0;
+  max-width: var(--width-content); /* Limit width to content width */
+  width: 100%; /* Make images responsive */
+  height: auto; /* Maintain aspect ratio */
+  margin: 1.5rem auto; /* Center images with auto horizontal margins */
   border-radius: 5px;
+  display: block; /* Ensure proper centering */
+  object-fit: contain; /* Ensure proper scaling */
 }
 
 .post-content blockquote {

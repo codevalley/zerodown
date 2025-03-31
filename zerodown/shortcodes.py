@@ -205,7 +205,7 @@ def featured_projects_shortcode(context, count="3"):
             <div class="project-card">
                 {% if project.metadata.image %}
                 <div class="project-card-image">
-                    <img src="{{ project.metadata.image }}" alt="{{ project.metadata.title }}">
+                    <img src="{{ project.metadata.image }}" alt="{{ project.metadata.title }}" style="max-width: 100%; height: auto; max-height: 100px; width: auto;">
                 </div>
                 {% endif %}
                 <div class="project-card-content">

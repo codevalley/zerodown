@@ -5,7 +5,7 @@ date: 2023-03-15
 order: 1
 featured: true
 tags: [Web Design, UI/UX, Responsive]
-image: /assets/project1.jpg
+image: /assets/project3.png
 summary: A complete redesign of Acme Corporation's website with a focus on user experience and modern design principles.
 link: https://example.com
 ---

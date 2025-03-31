@@ -27,10 +27,30 @@ class AssetProcessor(Treeprocessor):
     def run(self, root):
         """
         Process all image and anchor elements to adjust their paths.
+        Also handles image dimensions specified in Markdown.
         """
         # Process images
         for img in root.findall('.//img'):
             if 'src' in img.attrib:
+                # Check for dimensions in the alt text (format: alt {width=300 height=200})
+                if 'alt' in img.attrib:
+                    alt_text = img.attrib['alt']
+                    # Look for dimension specifications
+                    dimensions_match = re.search(r'\{\s*(?:width=(\d+))?\s*(?:height=(\d+))?\s*\}', alt_text)
+                    if dimensions_match:
+                        # Extract dimensions
+                        width, height = dimensions_match.groups()
+                        # Remove the dimensions from alt text
+                        clean_alt = re.sub(r'\{\s*(?:width=\d+)?\s*(?:height=\d+)?\s*\}', '', alt_text).strip()
+                        img.attrib['alt'] = clean_alt
+                        
+                        # Set width and height attributes if specified
+                        if width:
+                            img.attrib['width'] = width
+                        if height:
+                            img.attrib['height'] = height
+                
+                # Adjust the image path
                 img.attrib['src'] = self._adjust_asset_path(img.attrib['src'])
         
         # Process links
