@@ -11,14 +11,11 @@ from pathlib import Path
 from zerodown import __version__
 from zerodown.config import load_config, create_default_config
 from zerodown.builder import build_site
-from zerodown.console import zconsole
+from zerodown.console import zconsole, ZerodownConsole
 
 
 def main():
     """Main entry point for the Zerodown CLI."""
-    zconsole.header(f"Zerodown v{__version__}")
-    zconsole.print("Zero effort markdown website generator")
-    
     parser = argparse.ArgumentParser(
         description="Zerodown - Zero effort markdown website generator"
     )
@@ -44,6 +41,16 @@ def main():
         help='Format for the configuration file (default: yaml)'
     )
     
+    # Add verbosity control to init command
+    init_parser.add_argument(
+        '-v', '--verbose', action='count', default=0,
+        help='Increase output verbosity (can be used multiple times)'
+    )
+    init_parser.add_argument(
+        '-q', '--quiet', action='store_true',
+        help='Suppress all output except errors'
+    )
+    
     # 'build' command
     build_parser = subparsers.add_parser('build', help='Build the site')
     build_parser.add_argument(
@@ -53,6 +60,16 @@ def main():
     build_parser.add_argument(
         '--config', default='config.py',
         help='Path to the configuration file (default: config.py)'
+    )
+    
+    # Add verbosity control to build command
+    build_parser.add_argument(
+        '-v', '--verbose', action='count', default=0,
+        help='Increase output verbosity (can be used multiple times)'
+    )
+    build_parser.add_argument(
+        '-q', '--quiet', action='store_true',
+        help='Suppress all output except errors'
     )
     
     # 'serve' command
@@ -70,8 +87,38 @@ def main():
         help='Path to the configuration file (default: config.py)'
     )
     
+    # Add verbosity control to serve command
+    serve_parser.add_argument(
+        '-v', '--verbose', action='count', default=0,
+        help='Increase output verbosity (can be used multiple times)'
+    )
+    serve_parser.add_argument(
+        '-q', '--quiet', action='store_true',
+        help='Suppress all output except errors'
+    )
+    
     # Parse arguments
     args = parser.parse_args()
+    
+    # Set verbosity level based on arguments
+    if args.quiet:
+        verbosity = ZerodownConsole.QUIET
+    else:
+        # Map the verbosity count to our levels
+        verbosity_map = {
+            0: ZerodownConsole.MINIMAL,  # Default
+            1: ZerodownConsole.NORMAL,   # -v
+            2: ZerodownConsole.VERBOSE   # -vv
+        }
+        # Get the verbosity level, capped at VERBOSE
+        verbosity = verbosity_map.get(min(args.verbose, 2), ZerodownConsole.VERBOSE)
+    
+    # Update the global console instance with the selected verbosity
+    zconsole.verbosity = verbosity
+    
+    # Show header based on verbosity
+    if verbosity >= ZerodownConsole.MINIMAL:
+        zconsole.header(f"Zerodown v{__version__}")
     
     # Handle commands
     if args.command == 'init':

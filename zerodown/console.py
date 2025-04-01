@@ -28,25 +28,29 @@ error_console = Console(stderr=True, style="bold red")
 class ZerodownConsole:
     """Handles rich console output for Zerodown."""
     
-    def __init__(self):
+    # Verbosity levels
+    QUIET = 0   # Only errors
+    MINIMAL = 1  # Errors, warnings, and major steps
+    NORMAL = 2  # All info messages
+    VERBOSE = 3  # Detailed logging
+    
+    def __init__(self, verbosity=MINIMAL):
         self.console = console
         self.error_console = error_console
         self._progress = None
         self._live = None
         self._task_ids = {}
+        self.verbosity = verbosity
         
     def header(self, title: str):
         """Display a styled header."""
-        self.console.print()
-        self.console.print(Panel(
-            Align.center(f"[bold blue]{title}[/]"),
-            border_style="blue",
-            expand=False
-        ))
+        if self.verbosity >= self.MINIMAL:
+            self.console.print(f"\n[bold blue]{title}[/]")
         
     def subheader(self, text: str):
         """Display a styled subheader."""
-        self.console.print(f"\n[bold cyan]{text}[/]")
+        if self.verbosity >= self.MINIMAL:
+            self.console.print(f"[bold cyan]{text}[/]")
         
     def print(self, message: str, style: str = None):
         """Print a message with optional styling."""
@@ -57,15 +61,18 @@ class ZerodownConsole:
             
     def info(self, message: str):
         """Display an info message."""
-        self.console.print(f"[cyan]ℹ[/] {message}")
+        if self.verbosity >= self.NORMAL:
+            self.console.print(f"[cyan]ℹ[/] {message}")
         
     def success(self, message: str):
         """Display a success message."""
-        self.console.print(f"[green]✓[/] {message}")
+        if self.verbosity >= self.MINIMAL:
+            self.console.print(f"[green]✓[/] {message}")
         
     def warning(self, message: str):
         """Display a warning message."""
-        self.console.print(f"[yellow]⚠[/] {message}")
+        if self.verbosity >= self.MINIMAL:
+            self.console.print(f"[yellow]⚠[/] {message}")
         
     def error(self, message: str):
         """Display an error message."""
@@ -116,41 +123,48 @@ class ZerodownConsole:
             
     def display_summary(self, stats: Dict[str, Any]):
         """Display a summary table of build statistics."""
-        table = Table(title="Build Summary", show_header=True, header_style="bold blue")
-        table.add_column("Metric", style="cyan")
-        table.add_column("Value", style="green")
-        
-        for key, value in stats.items():
-            table.add_row(key, str(value))
+        if self.verbosity >= self.MINIMAL:
+            # For minimal output, just show key stats in a simple format
+            self.console.print(f"\n[green]✓[/] Built {stats.get('Total Pages', 0)} pages in {stats.get('Build Duration', '0')} seconds")
             
-        self.console.print(table)
+            if self.verbosity >= self.NORMAL:
+                # For normal verbosity, show the full table
+                table = Table(show_header=True, header_style="bold blue")
+                table.add_column("Metric", style="cyan")
+                table.add_column("Value", style="green")
+                
+                for key, value in stats.items():
+                    table.add_row(key, str(value))
+                    
+                self.console.print(table)
         
     def display_file_tree(self, title: str, root_dir: str, files: List[str]):
         """Display a tree of files."""
-        tree = Tree(f"[bold blue]{title}[/]")
-        
-        # Group files by directory
-        dirs = {}
-        for file in files:
-            parts = file.split('/')
-            if len(parts) > 1:
-                dir_path = '/'.join(parts[:-1])
-                filename = parts[-1]
-                if dir_path not in dirs:
-                    dirs[dir_path] = []
-                dirs[dir_path].append(filename)
-            else:
-                if '.' not in dirs:
-                    dirs['.'] = []
-                dirs['.'].append(file)
-                
-        # Add to tree
-        for dir_path, filenames in dirs.items():
-            dir_node = tree.add(f"[bold cyan]{dir_path}[/]")
-            for filename in filenames:
-                dir_node.add(f"[green]{filename}[/]")
-                
-        self.console.print(tree)
+        if self.verbosity >= self.VERBOSE:
+            tree = Tree(f"[bold blue]{title}[/]")
+            
+            # Group files by directory
+            dirs = {}
+            for file in files:
+                parts = file.split('/')
+                if len(parts) > 1:
+                    dir_path = '/'.join(parts[:-1])
+                    filename = parts[-1]
+                    if dir_path not in dirs:
+                        dirs[dir_path] = []
+                    dirs[dir_path].append(filename)
+                else:
+                    if '.' not in dirs:
+                        dirs['.'] = []
+                    dirs['.'].append(file)
+                    
+            # Add to tree
+            for dir_path, filenames in dirs.items():
+                dir_node = tree.add(f"[bold cyan]{dir_path}[/]")
+                for filename in filenames:
+                    dir_node.add(f"[green]{filename}[/]")
+                    
+            self.console.print(tree)
         
     def display_code(self, code: str, language: str = "python"):
         """Display syntax-highlighted code."""
@@ -167,5 +181,5 @@ class ZerodownConsole:
         self.console.clear()
 
 
-# Create a global console instance
-zconsole = ZerodownConsole()
+# Create a global console instance with MINIMAL verbosity by default
+zconsole = ZerodownConsole(ZerodownConsole.MINIMAL)

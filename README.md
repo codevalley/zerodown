@@ -23,6 +23,7 @@ Zerodown is a lightning-fast, zero-configuration static site generator that tran
 - 🗄️ **No database required**: Everything is stored as files
 - 🔌 **Zero configuration**: Works out of the box with sensible defaults
 - 🖥️ **Beautiful CLI**: Rich, colorful terminal output with progress tracking
+- 🔄 **Interactive Shell**: Command-line shell for streamlined workflow
 
 ## 🚀 Getting Started
 
@@ -55,7 +56,7 @@ If you just want to try Zerodown without installing it:
 1. Clone the repository as above
 2. Run the included script:
    ```bash
-   python run_zerodown.py
+   python zd_cli.py
    ```
 
 > 💡 **Pro tip**: Use a virtual environment to keep your dependencies isolated!
@@ -115,8 +116,8 @@ If you just want to try Zerodown without installing it:
    # If you installed the package
    zerodown build /path/to/your/site
    
-   # Or using the run script
-   python run_zerodown.py build /path/to/your/site
+   # Or using the CLI script
+   python zd_cli.py build /path/to/your/site
    ```
 
 6. **Preview locally**:
@@ -124,8 +125,8 @@ If you just want to try Zerodown without installing it:
    # If you installed the package
    zerodown serve /path/to/your/site
    
-   # Or using the run script
-   python run_zerodown.py serve /path/to/your/site
+   # Or using the CLI script
+   python zd_cli.py serve /path/to/your/site
    ```
    Then visit `http://localhost:8000` in your browser. ✨
 
@@ -237,6 +238,79 @@ Shortcodes allow you to include dynamic content directly in your Markdown files:
 - **`[featured_items]`**: Displays content items marked as featured in their frontmatter
   - `count`: Number of items to display (default: 3)
   - `section`: Optional section key to limit featured items to a specific section
+
+## 🔄 Interactive Shell
+
+Zerodown includes an interactive shell for a more streamlined workflow. This allows you to enter commands directly without having to type the full command each time.
+
+### Starting the Shell
+
+To start the interactive shell, simply run the CLI script without any arguments:
+
+```bash
+python zd_cli.py
+```
+
+You'll see a welcome message and a prompt where you can enter commands:
+
+```
+Zerodown v0.1.0 Interactive Shell
+
+Welcome to Zerodown v0.1.0 interactive shell!
+Type 'help' or '?' to list commands.
+
+zerodown> 
+```
+
+### Available Commands
+
+The shell supports all the same commands as the regular CLI, plus some additional navigation commands:
+
+- **`build`**: Build your site
+  ```
+  zerodown> build examples/blog
+  zerodown> build --verbose
+  ```
+
+- **`init`**: Initialize a new site
+  ```
+  zerodown> init my-new-site --template blog
+  ```
+
+- **`serve`**: Start a local development server
+  ```
+  zerodown> serve --port 8080
+  ```
+
+- **`cd`**: Change directory
+  ```
+  zerodown> cd examples/blog
+  ```
+
+- **`pwd`**: Show current directory
+  ```
+  zerodown> pwd
+  ```
+
+- **`ls`**: List files in current or specified directory
+  ```
+  zerodown> ls content
+  ```
+
+- **`help`**: Show help for a command
+  ```
+  zerodown> help build
+  ```
+
+- **`exit`** or **`quit`**: Exit the shell
+
+### Verbosity Control
+
+All commands support the same verbosity flags as the regular CLI:
+
+- **`-q`**: Quiet mode (errors only)
+- **`-v`**: Normal verbosity (detailed information)
+- **`-vv`**: Verbose mode (maximum detail)
 
 > 💡 **Philosophy**: Shortcodes keep all content decisions in Markdown files while templates remain purely structural, maintaining a clean separation of concerns.
 

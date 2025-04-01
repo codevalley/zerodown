@@ -31,35 +31,45 @@ def build_site(config):
     site_name = getattr(config, 'SITE_NAME', 'Zerodown Site')
     zconsole.header(f"Building {site_name}")
     
-    # Start progress tracking
-    main_task = zconsole.start_progress("Building site")
+    # Start progress tracking only if verbosity is normal or higher
+    main_task = None
+    if zconsole.verbosity >= zconsole.NORMAL:
+        main_task = zconsole.start_progress("Building site")
     
     try:
         # 1. Setup
-        setup_task = zconsole.add_subtask("Setting up environment")
-        zconsole.update_progress(setup_task, status="Cleaning output directory")
+        setup_task = None
+        if main_task:
+            setup_task = zconsole.add_subtask("Setting up environment")
+            zconsole.update_progress(setup_task, status="Cleaning output directory")
+            
         clean_output_dir(config)  # Exits on error
-        
-        zconsole.update_progress(setup_task, status="Copying static assets", advance=25)
         copy_static_assets(config)  # Continues on error
-        
-        zconsole.update_progress(setup_task, status="Applying theme", advance=25)
         copy_styles(config)  # Continues on error
-        
-        zconsole.update_progress(setup_task, status="Setting up templates", advance=25)
         jinja_env = setup_jinja_env(config)  # Exits on error
         
-        zconsole.update_progress(setup_task, status="Complete", advance=25)
+        if setup_task:
+            zconsole.update_progress(setup_task, status="Complete", advance=100)
         
         # 2. Process includes for global template context
-        includes_task = zconsole.add_subtask("Processing includes")
+        includes_task = None
+        if main_task:
+            includes_task = zconsole.add_subtask("Processing includes")
+            
         process_includes(config, jinja_env)
-        zconsole.update_progress(includes_task, status="Complete", advance=100)
+        
+        if includes_task:
+            zconsole.update_progress(includes_task, status="Complete", advance=100)
         
         # 3. Copy assets from content directory
-        assets_task = zconsole.add_subtask("Copying content assets")
+        assets_task = None
+        if main_task:
+            assets_task = zconsole.add_subtask("Copying content assets")
+            
         copy_content_assets(config)
-        zconsole.update_progress(assets_task, status="Complete", advance=100)
+        
+        if assets_task:
+            zconsole.update_progress(assets_task, status="Complete", advance=100)
     
         # 4. Process all sections
         all_items = []  # To collect items from all sections for homepage
@@ -71,39 +81,49 @@ def build_site(config):
         section_count = len(config.SECTIONS)
         for i, (section_key, section_config) in enumerate(config.SECTIONS.items()):
             section_title = section_config.get('title', section_key.capitalize())
-            section_task = zconsole.add_subtask(f"Processing section: {section_title}")
+            section_task = None
+            
+            if main_task:
+                section_task = zconsole.add_subtask(f"Processing section: {section_title}")
             
             # Process the section
             section_items = process_section(config, jinja_env, section_key, section_config, all_items)
             
-            # Update progress
-            progress_percent = 100
-            zconsole.update_progress(section_task, 
-                                    status=f"Built {len(section_items)} items", 
-                                    advance=progress_percent)
+            # Update progress if tracking
+            if section_task:
+                zconsole.update_progress(section_task, 
+                                        status=f"Built {len(section_items)} items", 
+                                        advance=100)
             
             # Update main progress based on section completion
-            main_progress = (i + 1) / (section_count + 2) * 100  # +2 for homepage and top-level pages
-            zconsole.update_progress(main_task, status=f"Processing sections ({i+1}/{section_count})", advance=main_progress)
+            if main_task:
+                main_progress = (i + 1) / (section_count + 2) * 100  # +2 for homepage and top-level pages
+                zconsole.update_progress(main_task, status=f"Processing sections ({i+1}/{section_count})", advance=main_progress)
     
         # 5. Build top-level pages
-        pages_task = zconsole.add_subtask("Building top-level pages")
-        
-        zconsole.update_progress(pages_task, status="Building homepage", advance=50)
+        pages_task = None
+        if main_task:
+            pages_task = zconsole.add_subtask("Building top-level pages")
+            zconsole.update_progress(pages_task, status="Building homepage", advance=50)
+            
         build_homepage(config, jinja_env, all_items)
         
-        zconsole.update_progress(pages_task, status="Building other pages", advance=50)
+        if pages_task:
+            zconsole.update_progress(pages_task, status="Building other pages", advance=50)
+            
         process_top_level_pages(config, jinja_env)
         
         # Update main progress
-        zconsole.update_progress(main_task, status="Finalizing")
+        if main_task:
+            zconsole.update_progress(main_task, status="Finalizing")
     
         # 6. Finish and report
         end_time = datetime.datetime.now()
         duration = end_time - start_time
         
-        # Stop progress display
-        zconsole.stop_progress()
+        # Stop progress display if it was started
+        if main_task:
+            zconsole.stop_progress()
         
         # Show build summary
         stats = {
@@ -116,18 +136,22 @@ def build_site(config):
         zconsole.success(f"Site build complete!")
         zconsole.display_summary(stats)
         
-        # Show output files tree if not too many files
-        output_path = Path(config.OUTPUT_DIR)
-        if output_path.exists():
-            files = [str(f.relative_to(output_path)) for f in output_path.glob('**/*') if f.is_file()]
-            if len(files) <= 20:  # Only show tree if not too many files
+        # Show output files tree only in verbose mode
+        if zconsole.verbosity >= zconsole.VERBOSE:
+            output_path = Path(config.OUTPUT_DIR)
+            if output_path.exists():
+                files = [str(f.relative_to(output_path)) for f in output_path.glob('**/*') if f.is_file()]
                 zconsole.display_file_tree("Generated Files", config.OUTPUT_DIR, files)
         
         return True
         
     except Exception as e:
-        zconsole.stop_progress()
+        if main_task:
+            zconsole.stop_progress()
         zconsole.error(f"Build failed: {str(e)}")
-        import traceback
-        zconsole.error(traceback.format_exc())
+        
+        # Only show traceback in verbose mode
+        if zconsole.verbosity >= zconsole.NORMAL:
+            import traceback
+            zconsole.error(traceback.format_exc())
         return False
