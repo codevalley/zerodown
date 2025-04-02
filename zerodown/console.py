@@ -59,24 +59,56 @@ class ZerodownConsole:
         else:
             self.console.print(message)
             
-    def info(self, message: str):
-        """Display an info message."""
+    def info(self, message: str, data: str = None):
+        """Display an info message with optional data.
+        
+        Args:
+            message: The action or message description
+            data: Optional data associated with the message
+        """
         if self.verbosity >= self.NORMAL:
-            self.console.print(f"[cyan]ℹ[/] {message}")
+            if data:
+                self.console.print(f"[cyan]ℹ[/] [bold]{message}[/] [dim cyan]→[/] [italic]{data}[/]")
+            else:
+                self.console.print(f"[cyan]ℹ[/] {message}")
         
-    def success(self, message: str):
-        """Display a success message."""
+    def success(self, message: str, data: str = None):
+        """Display a success message with optional data.
+        
+        Args:
+            message: The action or message description
+            data: Optional data associated with the message
+        """
         if self.verbosity >= self.MINIMAL:
-            self.console.print(f"[green]✓[/] {message}")
+            if data:
+                self.console.print(f"[green]✓[/] [bold]{message}[/] [dim green]→[/] [italic]{data}[/]")
+            else:
+                self.console.print(f"[green]✓[/] {message}")
         
-    def warning(self, message: str):
-        """Display a warning message."""
+    def warning(self, message: str, data: str = None):
+        """Display a warning message with optional data.
+        
+        Args:
+            message: The action or message description
+            data: Optional data associated with the message
+        """
         if self.verbosity >= self.MINIMAL:
-            self.console.print(f"[yellow]⚠[/] {message}")
+            if data:
+                self.console.print(f"[yellow]⚠[/] [bold]{message}[/] [dim yellow]→[/] [italic]{data}[/]")
+            else:
+                self.console.print(f"[yellow]⚠[/] {message}")
         
-    def error(self, message: str):
-        """Display an error message."""
-        self.error_console.print(f"[bold red]✗ ERROR:[/] {message}")
+    def error(self, message: str, data: str = None):
+        """Display an error message with optional data.
+        
+        Args:
+            message: The action or message description
+            data: Optional data associated with the message
+        """
+        if data:
+            self.error_console.print(f"[bold red]✗ ERROR:[/] [bold]{message}[/] [dim red]→[/] [italic]{data}[/]")
+        else:
+            self.error_console.print(f"[bold red]✗ ERROR:[/] {message}")
         
     def start_progress(self, description: str = "Building site"):
         """Start a progress display."""

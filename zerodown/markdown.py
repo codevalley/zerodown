@@ -172,7 +172,8 @@ def parse_markdown_file(filepath, output_path=None, base_url=None, context=None)
             "slug": os.path.splitext(os.path.basename(filepath))[0]  # Use filename (without ext) as slug
         }
     except Exception as e:
-        print(f"Error parsing Markdown file {filepath}: {e}")
+        from zerodown.console import zconsole
+        zconsole.error("Error parsing Markdown file", f"{filepath}: {e}")
         return None
 
 
@@ -207,7 +208,8 @@ def parse_markdown_content(content, source_path=None, output_path=None, base_url
             "content_html": html_content
         }
     except Exception as e:
-        print(f"Error parsing Markdown content: {e}")
+        from zerodown.console import zconsole
+        zconsole.error("Error parsing Markdown content", str(e))
         return None
 
 
@@ -303,7 +305,8 @@ def copy_content_assets(config):
     if not os.path.isdir(assets_dir):
         return
     
-    print(f"Copying content assets from {assets_dir} to {output_assets_dir}")
+    from zerodown.console import zconsole
+    zconsole.info("Copying content assets", f"from {assets_dir} to {output_assets_dir}")
     try:
         os.makedirs(output_assets_dir, exist_ok=True)
         for root, dirs, files in os.walk(assets_dir):
@@ -325,6 +328,8 @@ def copy_content_assets(config):
                     import shutil
                     shutil.copy2(src_path, dst_path)
                 except Exception as e:
-                    print(f"Error copying asset {src_path}: {e}")
+                    from zerodown.console import zconsole
+                    zconsole.error("Error copying asset", f"{src_path}: {e}")
     except Exception as e:
-        print(f"Error copying content assets: {e}")
+        from zerodown.console import zconsole
+        zconsole.error("Error copying content assets", str(e))

@@ -19,7 +19,7 @@ def setup_jinja_env(config):
     Returns:
         Environment: Configured Jinja2 environment
     """
-    zconsole.info(f"Setting up Jinja2 environment for templates in: {config.TEMPLATE_DIR}")
+    zconsole.info("Setting up Jinja2 environment", f"for templates in: {config.TEMPLATE_DIR}")
     try:
         env = Environment(
             loader=FileSystemLoader(config.TEMPLATE_DIR),
@@ -30,7 +30,7 @@ def setup_jinja_env(config):
         env.globals['now'] = datetime.datetime.now  # Example utility function
         return env
     except Exception as e:
-         zconsole.error(f"Error setting up Jinja2 environment: {e}")
+         zconsole.error("Error setting up Jinja2 environment", str(e))
          sys.exit(1)
 
 
@@ -50,7 +50,7 @@ def render_template(env, template_name, context):
         template = env.get_template(template_name)
         return template.render(context)
     except Exception as e:
-        zconsole.error(f"Error rendering template {template_name} with context keys {list(context.keys())}: {e}")
+        zconsole.error("Error rendering template", f"{template_name} with context keys {list(context.keys())}: {e}")
         # In production, might return a generic error page HTML
         return f"<h1>Error rendering template</h1><p>{e}</p>"
 
@@ -73,7 +73,7 @@ def process_includes(config, jinja_env):
     includes_dir = os.path.join(config.CONTENT_DIR, '_includes')
     
     if os.path.isdir(includes_dir):
-        zconsole.info(f"Processing includes from {includes_dir}")
+        zconsole.info("Processing includes", includes_dir)
         for include_file in os.listdir(includes_dir):
             if include_file.endswith('.md') and not include_file.startswith('.'):
                 include_path = os.path.join(includes_dir, include_file)
@@ -94,11 +94,11 @@ def process_includes(config, jinja_env):
                             # Add HTML content
                             context_key = os.path.splitext(include_file)[0] + '_html'
                             global_context[context_key] = parsed['content_html']
-                            zconsole.info(f"Loaded include: {include_file} as {context_key}")
+                            zconsole.info("Loaded include", f"{include_file} as {context_key}")
                     except Exception as e:
-                        zconsole.error(f"Error parsing include file {include_path}: {e}")
+                        zconsole.error("Error parsing include file", f"{include_path}: {e}")
     else:
-        zconsole.warning(f"Includes directory '{includes_dir}' not found, skipping includes.")
+        zconsole.warning("Includes directory not found", f"'{includes_dir}', skipping includes")
     
     # Add includes to Jinja globals
     jinja_env.globals.update(global_context)

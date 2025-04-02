@@ -15,13 +15,13 @@ def clean_output_dir(config):
     Args:
         config: Configuration module with OUTPUT_DIR defined
     """
-    zconsole.info(f"Cleaning directory: {config.OUTPUT_DIR}")
+    zconsole.info("Cleaning directory", config.OUTPUT_DIR)
     try:
         if os.path.exists(config.OUTPUT_DIR):
             shutil.rmtree(config.OUTPUT_DIR)
         os.makedirs(config.OUTPUT_DIR)
     except OSError as e:
-        zconsole.error(f"Error cleaning output directory: {e}")
+        zconsole.error("Error cleaning output directory", str(e))
         sys.exit(1)
 
 
@@ -32,14 +32,14 @@ def copy_static_assets(config):
     Args:
         config: Configuration module with STATIC_DIR and OUTPUT_DIR defined
     """
-    zconsole.info(f"Copying static assets from {config.STATIC_DIR} to {config.OUTPUT_DIR}")
+    zconsole.info("Copying static assets", f"from {config.STATIC_DIR} to {config.OUTPUT_DIR}")
     if os.path.exists(config.STATIC_DIR) and os.path.isdir(config.STATIC_DIR):
         try:
             shutil.copytree(config.STATIC_DIR, config.OUTPUT_DIR, dirs_exist_ok=True)
         except OSError as e:
-            zconsole.error(f"Error copying static assets: {e}")
+            zconsole.error("Error copying static assets", str(e))
     else:
-        zconsole.warning(f"Static directory '{config.STATIC_DIR}' not found or not a directory, skipping.")
+        zconsole.warning("Static directory not found or not a directory", f"'{config.STATIC_DIR}', skipping")
 
 
 def copy_styles(config):
@@ -54,16 +54,16 @@ def copy_styles(config):
     source_css_path = os.path.join(config.STYLES_DIR, selected_theme_file)
     target_css_path = os.path.join(styles_output_dir, 'main.css')
 
-    zconsole.info(f"Applying theme: Copying '{source_css_path}' to '{target_css_path}'")
+    zconsole.info("Applying theme", f"Copying '{source_css_path}' to '{target_css_path}'")
 
     if os.path.isfile(source_css_path):
         try:
             os.makedirs(styles_output_dir, exist_ok=True)
             shutil.copy2(source_css_path, target_css_path)
         except OSError as e:
-             zconsole.error(f"Error copying theme CSS: {e}")
+             zconsole.error("Error copying theme CSS", str(e))
     else:
-        zconsole.warning(f"Styles theme file '{source_css_path}' not found, skipping CSS copy.")
+        zconsole.warning("Styles theme file not found", f"'{source_css_path}', skipping CSS copy")
         
     # Copy any additional CSS files that should always be included
     additional_css_files = getattr(config, 'ADDITIONAL_CSS_FILES', [])
@@ -73,11 +73,11 @@ def copy_styles(config):
         if os.path.isfile(additional_source):
             try:
                 shutil.copy2(additional_source, additional_target)
-                zconsole.info(f"Copied additional CSS: {css_file}")
+                zconsole.info("Copied additional CSS", css_file)
             except OSError as e:
-                zconsole.error(f"Error copying additional CSS file {css_file}: {e}")
+                zconsole.error("Error copying additional CSS file", f"{css_file}: {e}")
         else:
-            zconsole.warning(f"Additional CSS file '{additional_source}' not found, skipping.")
+            zconsole.warning("Additional CSS file not found", f"'{additional_source}', skipping")
 
 
 def write_output_file(output_path, content):

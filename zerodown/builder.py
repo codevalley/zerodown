@@ -43,9 +43,16 @@ def build_site(config):
             setup_task = zconsole.add_subtask("Setting up environment")
             zconsole.update_progress(setup_task, status="Cleaning output directory")
             
+        # Clean output directory
         clean_output_dir(config)  # Exits on error
+        
+        # Copy static assets
         copy_static_assets(config)  # Continues on error
+        
+        # Copy styles
         copy_styles(config)  # Continues on error
+        
+        # Setup Jinja environment
         jinja_env = setup_jinja_env(config)  # Exits on error
         
         if setup_task:
@@ -133,7 +140,7 @@ def build_site(config):
             "Output Directory": config.OUTPUT_DIR
         }
         
-        zconsole.success(f"Site build complete!")
+        zconsole.success("Site build complete!")
         zconsole.display_summary(stats)
         
         # Show output files tree only in verbose mode

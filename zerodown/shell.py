@@ -110,20 +110,43 @@ class ZerodownShell(cmd.Cmd):
             
             # Get absolute paths before changing directory
             site_path = os.path.abspath(args.path)
+            
+            # Check if the site path exists
+            if not os.path.exists(site_path):
+                from zerodown.console import zconsole
+                zconsole.error("Directory not found", f"'{site_path}'")
+                return
+                
+            # Check if the site path is a directory
+            if not os.path.isdir(site_path):
+                from zerodown.console import zconsole
+                zconsole.error("Not a directory", f"'{site_path}'")
+                return
+                
             config_path = args.config
             if not os.path.isabs(config_path):
                 config_path = os.path.join(site_path, config_path)
             
             # Change to the specified directory
             original_dir = os.getcwd()
-            os.chdir(site_path)
-            
             try:
-                config = load_config(config_path)
-                build_site(config)
+                os.chdir(site_path)
+                
+                try:
+                    config = load_config(config_path)
+                    build_site(config)
+                except Exception as e:
+                    from zerodown.console import zconsole
+                    zconsole.error("Build failed", str(e))
+            except Exception as e:
+                from zerodown.console import zconsole
+                zconsole.error("Failed to change directory", str(e))
             finally:
                 # Change back to the original directory
-                os.chdir(original_dir)
+                try:
+                    os.chdir(original_dir)
+                except Exception:
+                    pass
         except SystemExit:
             # Catch the SystemExit to prevent the shell from exiting
             pass
@@ -168,13 +191,39 @@ class ZerodownShell(cmd.Cmd):
         try:
             args = parser.parse_args(shlex.split(arg))
             self._set_verbosity(args)
-            serve_site(args.port, args.config, args.path)
+            
+            # Get absolute path and validate it exists
+            site_path = os.path.abspath(args.path)
+            
+            # Check if the site path exists
+            if not os.path.exists(site_path):
+                from zerodown.console import zconsole
+                zconsole.error("Directory not found", f"'{site_path}'")
+                return
+                
+            # Check if the site path is a directory
+            if not os.path.isdir(site_path):
+                from zerodown.console import zconsole
+                zconsole.error("Not a directory", f"'{site_path}'")
+                return
+                
+            # Validate config path
+            config_path = args.config
+            if not os.path.isabs(config_path):
+                config_path = os.path.join(site_path, config_path)
+            
+            try:
+                serve_site(args.port, config_path, site_path)
+            except Exception as e:
+                from zerodown.console import zconsole
+                zconsole.error("Server error", str(e))
         except SystemExit:
             # Catch the SystemExit to prevent the shell from exiting
             pass
         except KeyboardInterrupt:
             # Handle Ctrl+C gracefully
-            print("\nServer stopped")
+            from zerodown.console import zconsole
+            zconsole.info("Server stopped")
     
     def do_cd(self, arg):
         """
