@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Removed data-theme attribute -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark"> <!-- Added for auto light/dark mode -->
+    <title>{{ title | default(config.site_name) }}</title>
+    <meta name="description" content="{{ description | default(config.site_description) }}">
+    
+    {# Link Pico CSS - Always link to main.css as that's the target name used by copy_styles #}
+    <link rel="stylesheet" href="{{ config.base_url | default('/') }}styles/main.css">
+    
+    {# Add Google Fonts (Inter & Source Serif 4) from basic example #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+    
+    {# Optional: Link custom CSS - ensure it comes AFTER Pico.css #}
+    <link rel="stylesheet" href="{{ config.base_url | default('/') }}styles/custom.css">
+    
+    {# Block for additional head elements (e.g., per-page meta tags) #}
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+    {# Header - Rendered from _includes/header.md #}
+    <header class="container">
+        {{ header_html | default('') | safe }}
+    </header>
+
+    {# Main Content Area #}
+    <main class="container">
+        {% block content %}
+        {# Default content rendering if block is not overridden #}
+        {{ content | safe }}
+        {% endblock %}
+    </main>
+
+    {# Footer - Rendered from _includes/footer.md #}
+    <footer class="container">
+        <small>{{ footer_html | default('') | safe }}</small>
+    </footer>
+
+    {# Block for scripts at the end of the body #}
+    {% block scripts %}{% endblock %}
+
+</body>
+
+</html> 

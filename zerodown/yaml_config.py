@@ -46,6 +46,21 @@ def load_yaml_config(config_path):
     # Set sections
     config.SECTIONS = config_data.get('sections', {})
     
+    # Set navigation items
+    config.NAV_ITEMS = config_data.get('nav_items', [])
+
+    # Set additional CSS files
+    config.ADDITIONAL_CSS_FILES = config_data.get('additional_css_files', [])
+
+    # Add uppercase versions for compatibility with utils.copy_styles and templates expecting uppercase
+    for key in ['SITE_NAME', 'SITE_DESCRIPTION', 'BASE_URL', 
+                'CONTENT_DIR', 'TEMPLATE_DIR', 'STYLES_DIR', 
+                'STATIC_DIR', 'OUTPUT_DIR', 'THEME_CSS_FILE', 
+                'SECTIONS', 'NAV_ITEMS', 'ADDITIONAL_CSS_FILES']:
+        lower_key = key.lower()
+        if hasattr(config, lower_key):
+            setattr(config, key, getattr(config, lower_key))
+
     return config
 
 

@@ -67,17 +67,20 @@ def copy_styles(config):
         
     # Copy any additional CSS files that should always be included
     additional_css_files = getattr(config, 'ADDITIONAL_CSS_FILES', [])
-    for css_file in additional_css_files:
-        additional_source = os.path.join(config.STYLES_DIR, css_file)
-        additional_target = os.path.join(styles_output_dir, css_file)
-        if os.path.isfile(additional_source):
-            try:
-                shutil.copy2(additional_source, additional_target)
-                zconsole.info("Copied additional CSS", css_file)
-            except OSError as e:
-                zconsole.error("Error copying additional CSS file", f"{css_file}: {e}")
-        else:
-            zconsole.warning("Additional CSS file not found", f"'{additional_source}', skipping")
+    if additional_css_files:
+        zconsole.info(f"Copying {len(additional_css_files)} additional CSS files...")
+        os.makedirs(styles_output_dir, exist_ok=True)
+        for css_file in additional_css_files:
+            additional_source = os.path.join(config.STYLES_DIR, css_file)
+            additional_target = os.path.join(styles_output_dir, css_file)
+            if os.path.isfile(additional_source):
+                try:
+                    shutil.copy2(additional_source, additional_target)
+                    zconsole.info("Copied additional CSS", css_file)
+                except OSError as e:
+                    zconsole.error("Error copying additional CSS file", f"{css_file}: {e}")
+            else:
+                zconsole.warning("Additional CSS file not found", f"'{additional_source}', skipping")
 
 
 def write_output_file(output_path, content):

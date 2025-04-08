@@ -1,0 +1,35 @@
+# zerodown-docs/config.yaml
+site_name: "Zerodown"
+site_description: "Zero effort, maximum markdown power! Official documentation for the Zerodown static site generator."
+base_url: / # Adjust for production deployment if needed
+
+# Directory paths (relative to this config file)
+content_dir: content
+template_dir: templates
+styles_dir: styles
+output_dir: _site
+
+# Theme settings
+theme_css_file: pico.min.css
+
+# Also copy custom.css to the output styles directory
+additional_css_files:
+  - custom.css
+
+# Navigation items (will be rendered in the header)
+nav_items:
+  - title: Docs
+    url: /getting-started.html # Link to the first main doc page
+  - title: Features
+    url: /markdown-features.html 
+  - title: GitHub
+    url: https://github.com/yourusername/zerodown # TODO: Replace with actual repo URL
+  - title: About
+    url: /about.html # Assumes an about.md will be created
+
+# Content sections (optional for now, relying on top-level pages)
+# sections:
+#   docs:
+#     title: Documentation
+#     template: page.html
+#     list_template: page_list.html 

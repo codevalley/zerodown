@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+{# This template renders the content from home.md #}
+{# The `home_content` variable is provided by the build_homepage function #}
+{# It contains keys like 'metadata' and 'content_html' #}
+
+{# Removed the centering div - rely on default container alignment #}
+{{ home_content.content_html | safe }}
+
+{% endblock %} 

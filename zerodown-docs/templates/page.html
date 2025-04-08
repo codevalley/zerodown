@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {# Use an article tag for semantic grouping of page content #}
+    <article>
+        {# Render the title from frontmatter if it exists #}
+        {% if title %}
+        <header>
+            <h1>{{ title }}</h1>
+        </header>
+        {% endif %}
+        
+        {# Render the main Markdown content #}
+        {{ content | safe }}
+    </article>
+{% endblock %} 
