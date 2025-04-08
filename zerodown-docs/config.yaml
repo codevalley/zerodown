@@ -15,6 +15,7 @@ theme_css_file: pico.min.css
 # Also copy custom.css to the output styles directory
 additional_css_files:
   - custom.css
+  - syntax.css
 
 # Navigation items (will be rendered in the header)
 nav_items:

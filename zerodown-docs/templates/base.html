@@ -19,6 +19,9 @@
     {# Optional: Link custom CSS - ensure it comes AFTER Pico.css #}
     <link rel="stylesheet" href="{{ config.base_url | default('/') }}styles/custom.css">
     
+    {# Syntax Highlighting CSS #}
+    <link rel="stylesheet" href="{{ config.base_url | default('/') }}styles/syntax.css">
+    
     {# Block for additional head elements (e.g., per-page meta tags) #}
     {% block head %}{% endblock %}
 </head>
