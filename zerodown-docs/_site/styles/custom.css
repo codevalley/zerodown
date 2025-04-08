@@ -1,0 +1,16 @@
+/* Custom Styles for Zerodown Docs */
+
+/* Restrict container width slightly more */
+.container {
+    max-width: 960px; /* Adjust as desired */
+}
+
+/* Remove underline from header site title link */
+header.container h1 a {
+    text-decoration: none;
+    color: inherit; /* Ensure it uses the header text color */
+}
+
+header.container h1 a:hover {
+    text-decoration: none; /* Keep underline off on hover too */
+} 

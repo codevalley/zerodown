@@ -146,6 +146,28 @@ def _load_yaml_config(config_path):
     
     # Set sections
     config.SECTIONS = config_data.get('sections', {})
+
+    # Set nav_items
+    config.NAV_ITEMS = config_data.get('nav_items', [])
+
+    # Set additional_css_files
+    config.ADDITIONAL_CSS_FILES = config_data.get('additional_css_files', [])
+
+    # Add other uppercase versions for compatibility
+    # (This could be done more elegantly, but ensures compatibility for now)
+    config.SITE_NAME = config.SITE_NAME
+    config.SITE_DESCRIPTION = config.SITE_DESCRIPTION
+    config.SITE_AUTHOR = config.SITE_AUTHOR
+    config.BASE_URL = config.BASE_URL
+    config.CONTENT_DIR = config.CONTENT_DIR
+    config.TEMPLATE_DIR = config.TEMPLATE_DIR
+    config.STYLES_DIR = config.STYLES_DIR
+    config.STATIC_DIR = config.STATIC_DIR
+    config.OUTPUT_DIR = config.OUTPUT_DIR
+    config.THEME_CSS_FILE = config.THEME_CSS_FILE
+    config.SECTIONS = config.SECTIONS
+    config.NAV_ITEMS = config.NAV_ITEMS
+    config.ADDITIONAL_CSS_FILES = config.ADDITIONAL_CSS_FILES
     
     return config
 
