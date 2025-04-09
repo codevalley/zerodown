@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark"> <!-- Added for auto light/dark mode -->
-    <title>Cli-reference</title>
-    <meta name="description" content="Zero effort, maximum markdown power! Official documentation for the Zerodown static site generator.">
+    <title>CLI Reference</title>
+    <meta name="description" content="Complete documentation for Zerodown&#39;s command line interface and interactive shell.">
     
     
     <link rel="stylesheet" href="/styles/main.css">
@@ -33,14 +33,101 @@
         <h1 id="zerodown"><a href="/">⚡ Zerodown ⚡</a></h1>
 <p><em>Zero effort, maximum markdown power!</em></p>
 <!-- Navigation Links -->
-<p><a href="/getting-started.html">Docs</a> &nbsp;&nbsp; <a href="/markdown-features.html">Features</a> &nbsp;&nbsp; <a href="https://github.com/yourusername/zerodown">GitHub</a> &nbsp;&nbsp; <a href="/about.html">About</a></p>
+<p><a href="/getting-started.html">Docs</a> &nbsp;&nbsp; <a href="/markdown-features.html">Features</a> &nbsp;&nbsp; <a href="/cli-reference.html">CLI</a> &nbsp;&nbsp; <a href="/configuration.html">Setting Up</a> &nbsp;&nbsp; <a href="https://github.com/yourusername/zerodown">GitHub</a> &nbsp;&nbsp; <a href="/about.html">About</a></p>
+<hr>
     </header>
 
     
     <main class="container">
         
     
-    
+    <h1 id="cli-reference">CLI Reference</h1>
+<p>Zerodown provides a simple but powerful command-line interface (CLI) to handle all aspects of site generation, from initialization to building and serving your site.</p>
+<h2 id="basic-commands">Basic Commands</h2>
+<h3 id="initialize-a-new-site">Initialize a New Site</h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>zd_cli.py<span class="w"> </span>init<span class="w"> </span>&lt;site_directory&gt;<span class="w"> </span><span class="o">[</span>--template<span class="w"> </span>&lt;template_name&gt;<span class="o">]</span>
+</code></pre></div>
+
+<p>Creates a new Zerodown site with the necessary directory structure and configuration files.</p>
+<p>Options:
+- <code>&lt;site_directory&gt;</code>: The directory where your new site will be created
+- <code>--template &lt;template_name&gt;</code>: (Optional) The starter template to use (defaults to "basic")</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>zd_cli.py<span class="w"> </span>init<span class="w"> </span>my-blog<span class="w"> </span>--template<span class="w"> </span>blog
+</code></pre></div>
+
+<h3 id="build-a-site">Build a Site</h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>zd_cli.py<span class="w"> </span>build<span class="w"> </span>&lt;site_directory&gt;
+</code></pre></div>
+
+<p>Builds a static site from your Markdown content.</p>
+<p>Options:
+- <code>&lt;site_directory&gt;</code>: The directory containing your Zerodown site
+- <code>--output &lt;directory&gt;</code>: (Optional) Override the output directory
+- <code>--clean</code>: (Optional) Clean the output directory before building</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>zd_cli.py<span class="w"> </span>build<span class="w"> </span>my-blog<span class="w"> </span>--clean
+</code></pre></div>
+
+<h3 id="serve-a-site">Serve a Site</h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>zd_cli.py<span class="w"> </span>serve<span class="w"> </span>&lt;site_directory&gt;<span class="w"> </span><span class="o">[</span>--port<span class="w"> </span>&lt;port_number&gt;<span class="o">]</span>
+</code></pre></div>
+
+<p>Launches a local development server for previewing your site.</p>
+<p>Options:
+- <code>&lt;site_directory&gt;</code>: The directory containing your Zerodown site
+- <code>--port &lt;port_number&gt;</code>: (Optional) The port to serve the site on (default: 8000)</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>zd_cli.py<span class="w"> </span>serve<span class="w"> </span>my-blog<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
+</code></pre></div>
+
+<h2 id="interactive-shell">Interactive Shell</h2>
+<p>Zerodown also provides an interactive shell for more direct management of your site:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>zd_cli.py<span class="w"> </span>shell<span class="w"> </span>&lt;site_directory&gt;
+</code></pre></div>
+
+<p>In the interactive shell, you can use the following commands:</p>
+<h3 id="shell-commands">Shell Commands</h3>
+<ul>
+<li><code>build</code>: Build the site</li>
+<li><code>serve [port]</code>: Start the development server</li>
+<li><code>watch</code>: Watch for file changes and rebuild automatically</li>
+<li><code>config show</code>: Display current configuration</li>
+<li><code>config set &lt;key&gt; &lt;value&gt;</code>: Modify a configuration value</li>
+<li><code>exit</code> or <code>quit</code>: Exit the shell</li>
+</ul>
+<p>Example shell session:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">$</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="n">zd_cli</span><span class="p">.</span><span class="n">py</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">blog</span>
+<span class="n">Zerodown</span><span class="w"> </span><span class="n">Interactive</span><span class="w"> </span><span class="n">Shell</span>
+<span class="n">Type</span><span class="w"> </span><span class="err">&#39;</span><span class="n">help</span><span class="err">&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">commands</span>
+
+<span class="n">zd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">watch</span>
+<span class="n">Watching</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">changes</span><span class="p">...</span><span class="w"> </span><span class="n">Press</span><span class="w"> </span><span class="n">Ctrl</span><span class="o">+</span><span class="n">C</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">stop</span>
+
+<span class="p">[</span><span class="n">file</span><span class="w"> </span><span class="n">changed</span><span class="p">]</span><span class="w"> </span><span class="n">content</span><span class="o">/</span><span class="n">posts</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">first</span><span class="o">-</span><span class="n">post</span><span class="p">.</span><span class="n">md</span>
+<span class="n">Rebuilding</span><span class="w"> </span><span class="n">site</span><span class="p">...</span>
+<span class="n">Site</span><span class="w"> </span><span class="n">built</span><span class="w"> </span><span class="n">successfully</span><span class="o">!</span>
+
+<span class="n">zd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="n">show</span>
+<span class="nl">site_name</span><span class="p">:</span><span class="w"> </span><span class="n">My</span><span class="w"> </span><span class="n">Blog</span>
+<span class="nl">site_description</span><span class="p">:</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="n">blog</span><span class="w"> </span><span class="n">built</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">Zerodown</span>
+<span class="p">...</span>
+
+<span class="n">zd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">exit</span>
+</code></pre></div>
+
+<h2 id="environment-variables">Environment Variables</h2>
+<p>Zerodown respects the following environment variables:</p>
+<ul>
+<li><code>ZERODOWN_CONFIG_PATH</code>: Path to a global config file</li>
+<li><code>ZERODOWN_TEMPLATE_DIR</code>: Directory containing custom templates</li>
+<li><code>ZERODOWN_LOG_LEVEL</code>: Set logging level (DEBUG, INFO, WARNING, ERROR)</li>
+</ul>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="/configuration.html">Configuration Reference</a>: Detailed documentation of configuration options</li>
+<li><a href="/content-structure.html">Project Structure</a>: Learn about the expected file structure</li>
+</ul>
 
     </main>
 

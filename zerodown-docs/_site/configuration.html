@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark"> <!-- Added for auto light/dark mode -->
-    <title>Configuration</title>
-    <meta name="description" content="Zero effort, maximum markdown power! Official documentation for the Zerodown static site generator.">
+    <title>Setting Up</title>
+    <meta name="description" content="Guide to configuring, theming, and deploying your Zerodown site.">
     
     
     <link rel="stylesheet" href="/styles/main.css">
@@ -33,14 +33,283 @@
         <h1 id="zerodown"><a href="/">⚡ Zerodown ⚡</a></h1>
 <p><em>Zero effort, maximum markdown power!</em></p>
 <!-- Navigation Links -->
-<p><a href="/getting-started.html">Docs</a> &nbsp;&nbsp; <a href="/markdown-features.html">Features</a> &nbsp;&nbsp; <a href="https://github.com/yourusername/zerodown">GitHub</a> &nbsp;&nbsp; <a href="/about.html">About</a></p>
+<p><a href="/getting-started.html">Docs</a> &nbsp;&nbsp; <a href="/markdown-features.html">Features</a> &nbsp;&nbsp; <a href="/cli-reference.html">CLI</a> &nbsp;&nbsp; <a href="/configuration.html">Setting Up</a> &nbsp;&nbsp; <a href="https://github.com/yourusername/zerodown">GitHub</a> &nbsp;&nbsp; <a href="/about.html">About</a></p>
+<hr>
     </header>
 
     
     <main class="container">
         
     
-    
+    <h1 id="setting-up-your-zerodown-site">Setting Up Your Zerodown Site</h1>
+<p>This guide covers everything you need to set up and customize your Zerodown site, from configuration to deployment.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Zerodown uses a simple configuration file that controls how your site is built, which templates are used, and where files are stored.</p>
+<h3 id="configuration-file">Configuration File</h3>
+<p>By default, Zerodown looks for a file named <code>config.yaml</code> in your site's root directory. Here's a typical configuration file with all available options:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Basic site information</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">Zerodown</span><span class="nv"> </span><span class="s">Site&quot;</span>
+<span class="nt">site_description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">site</span><span class="nv"> </span><span class="s">built</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">Zerodown&quot;</span>
+<span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span><span class="w">                  </span><span class="c1"># Base URL for production deployment</span>
+
+<span class="c1"># Directory paths (relative to config file)</span>
+<span class="nt">content_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content</span><span class="w">         </span><span class="c1"># Where your markdown files live</span>
+<span class="nt">template_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">templates</span><span class="w">      </span><span class="c1"># Where your HTML templates live</span>
+<span class="nt">styles_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">styles</span><span class="w">           </span><span class="c1"># Where your CSS files live</span>
+<span class="nt">output_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_site</span><span class="w">            </span><span class="c1"># Where the generated site will be output</span>
+
+<span class="c1"># Theme settings</span>
+<span class="nt">theme_css_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pico.min.css</span><span class="w"> </span><span class="c1"># Main CSS theme file</span>
+<span class="nt">additional_css_files</span><span class="p">:</span><span class="w">        </span><span class="c1"># Additional CSS files to include</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom.css</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">syntax.css</span>
+
+<span class="c1"># Navigation items (rendered in the header)</span>
+<span class="nt">nav_items</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Home</span>
+<span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">About</span>
+<span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/about.html</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Blog</span>
+<span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/blog/</span>
+
+<span class="c1"># Content sections (optional)</span>
+<span class="nt">sections</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blog</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Blog</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blog_post.html</span><span class="w">    </span><span class="c1"># Template for individual posts</span>
+<span class="w">    </span><span class="nt">list_template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blog_list.html</span><span class="w"> </span><span class="c1"># Template for the list page</span>
+<span class="w">    </span><span class="nt">sort_by</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date</span><span class="w">               </span><span class="c1"># Sort by which front matter field</span>
+<span class="w">    </span><span class="nt">sort_reverse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># Newest first</span>
+
+<span class="c1"># Markdown processing options</span>
+<span class="nt">markdown_extensions</span><span class="p">:</span><span class="w">          </span><span class="c1"># Extensions for Python-Markdown</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codehilite</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fenced_code</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">toc</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admonition</span>
+
+<span class="c1"># Advanced options</span>
+<span class="nt">permalink_style</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/:title.html</span><span class="w"> </span><span class="c1"># How URLs are generated</span>
+<span class="nt">date_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;%B</span><span class="nv"> </span><span class="s">%d,</span><span class="nv"> </span><span class="s">%Y&quot;</span><span class="w">      </span><span class="c1"># Date format for templates</span>
+<span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UTC</span><span class="w">                 </span><span class="c1"># Timezone for date handling</span>
+</code></pre></div>
+
+<h3 id="configuration-options">Configuration Options</h3>
+<h4 id="basic-information">Basic Information</h4>
+<ul>
+<li><code>site_name</code>: The name of your site (used in templates and metadata)</li>
+<li><code>site_description</code>: A brief description of your site (used in metadata)</li>
+<li><code>base_url</code>: The base URL where your site will be deployed (e.g., "/" or "/blog/")</li>
+</ul>
+<h4 id="directory-paths">Directory Paths</h4>
+<ul>
+<li><code>content_dir</code>: Directory containing your Markdown content files</li>
+<li><code>template_dir</code>: Directory containing your HTML templates</li>
+<li><code>styles_dir</code>: Directory containing your CSS files</li>
+<li><code>output_dir</code>: Directory where the generated site will be output</li>
+<li><code>assets_dir</code>: (Optional) Directory for static assets like images and downloads</li>
+</ul>
+<h4 id="navigation">Navigation</h4>
+<ul>
+<li><code>nav_items</code>: List of navigation items to display in your site's header</li>
+<li>Each item needs a <code>title</code> and <code>url</code></li>
+<li>Optional <code>target: _blank</code> for external links</li>
+</ul>
+<h4 id="content-sections">Content Sections</h4>
+<p>Sections allow you to organize content into categories with specific templates:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">sections</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">blog</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Blog Posts</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blog_post.html</span>
+<span class="w">    </span><span class="nt">list_template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blog_list.html</span>
+<span class="w">    </span><span class="nt">sort_by</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date</span>
+<span class="w">    </span><span class="nt">sort_reverse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blog/</span><span class="w">           </span><span class="c1"># Custom path for this section</span>
+<span class="w">    </span><span class="nt">index_page</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># Generate an index page for this section</span>
+</code></pre></div>
+
+<h4 id="markdown-processing">Markdown Processing</h4>
+<ul>
+<li><code>markdown_extensions</code>: List of Python-Markdown extensions to enable</li>
+<li><code>markdown_extension_configs</code>: Configuration for specific extensions</li>
+</ul>
+<h4 id="advanced-options">Advanced Options</h4>
+<ul>
+<li><code>permalink_style</code>: Pattern for generating URLs</li>
+<li><code>date_format</code>: Default date format for templates</li>
+<li><code>timezone</code>: Timezone for date handling</li>
+</ul>
+<h3 id="python-configuration">Python Configuration</h3>
+<p>Instead of YAML, you can also use a Python file (<code>config.py</code>) for more dynamic configuration:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># config.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Basic site info</span>
+<span class="n">site_name</span> <span class="o">=</span> <span class="s2">&quot;My Zerodown Site&quot;</span>
+<span class="n">site_description</span> <span class="o">=</span> <span class="s2">&quot;A site built with Zerodown&quot;</span>
+
+<span class="c1"># Dynamic configuration based on environment</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PRODUCTION&quot;</span><span class="p">):</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://mysite.com/&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+
+<span class="c1"># Dynamic navigation</span>
+<span class="n">nav_items</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Home&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;/&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;About&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;/about.html&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># Add blog section only if blog posts exist</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;content/blog&quot;</span><span class="p">):</span>
+    <span class="n">nav_items</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Blog&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;/blog/&quot;</span><span class="p">})</span>
+
+<span class="c1"># Dynamic copyright year</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">copyright_year</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+</code></pre></div>
+
+<h3 id="environment-variables">Environment Variables</h3>
+<p>Configuration values can be overridden with environment variables prefixed with <code>ZERODOWN_</code>:</p>
+<ul>
+<li><code>ZERODOWN_SITE_NAME</code>: Override site_name</li>
+<li><code>ZERODOWN_OUTPUT_DIR</code>: Override output_dir</li>
+<li><code>ZERODOWN_BASE_URL</code>: Override base_url</li>
+</ul>
+<h2 id="theming">Theming</h2>
+<p>Zerodown makes it easy to customize the appearance of your site using CSS.</p>
+<h3 id="default-theme-picocss">Default Theme: Pico.css</h3>
+<p>By default, Zerodown uses <a href="https://picocss.com/">Pico.css</a>, a minimal CSS framework that provides beautiful, semantic styling with minimal effort.</p>
+<p>Pico.css follows these principles:
+- <strong>Semantic:</strong> Works with standard HTML elements, no need for custom classes
+- <strong>Responsive:</strong> Adapts to all screen sizes
+- <strong>Lightweight:</strong> Minimal footprint at under 10KB
+- <strong>No JavaScript:</strong> Pure CSS for maximum simplicity</p>
+<h3 id="customizing-the-theme">Customizing the Theme</h3>
+<p>To customize your site's appearance:</p>
+<ol>
+<li>
+<p><strong>Include Pico.css:</strong> Make sure your <code>config.yaml</code> has:
+   <code>yaml
+   theme_css_file: pico.min.css</code></p>
+</li>
+<li>
+<p><strong>Create a custom CSS file:</strong> Add your custom styles in <code>styles/custom.css</code> and reference it in <code>config.yaml</code>:
+   ```yaml
+   additional_css_files:</p>
+<ul>
+<li>custom.css
+   ```</li>
+</ul>
+</li>
+<li>
+<p><strong>Use CSS variables:</strong> Override Pico's CSS variables for easy customization:
+   ```css
+   /<em> Change the primary color </em>/
+   :root {
+     --primary: #8e24aa;
+     --primary-hover: #7b1fa2;
+   }</p>
+</li>
+</ol>
+<p>/<em> Customize fonts </em>/
+   :root {
+     --font-family: 'Source Sans Pro', sans-serif;
+     --font-size: 16px;
+   }
+   ```</p>
+<h3 id="light-and-dark-modes">Light and Dark Modes</h3>
+<p>Pico.css supports both light and dark modes. To enable this:</p>
+<ol>
+<li>Add <code>data-theme="light"</code> or <code>data-theme="dark"</code> to your HTML tag, or</li>
+<li>Use <code>&lt;meta name="color-scheme" content="light dark"&gt;</code> to respect system preferences</li>
+</ol>
+<h3 id="custom-layouts">Custom Layouts</h3>
+<p>For more advanced customization, you can:</p>
+<ol>
+<li>Create custom templates in your <code>templates/</code> directory</li>
+<li>Override blocks in the base template</li>
+<li>Create section-specific templates</li>
+</ol>
+<h2 id="deployment">Deployment</h2>
+<p>Once you've built your Zerodown site, you can deploy it to various hosting platforms.</p>
+<h3 id="building-for-production">Building for Production</h3>
+<p>Before deploying, build your site with production settings:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Set the base URL for production (if different)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ZERODOWN_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://mysite.com/&quot;</span>
+
+<span class="c1"># Build the site</span>
+python<span class="w"> </span>zd_cli.py<span class="w"> </span>build<span class="w"> </span>my-site<span class="w"> </span>--clean
+</code></pre></div>
+
+<p>Your built site will be in the <code>_site</code> directory (or whatever you've set as <code>output_dir</code>).</p>
+<h3 id="deployment-options">Deployment Options</h3>
+<h4 id="github-pages">GitHub Pages</h4>
+<p>To deploy to GitHub Pages:</p>
+<ol>
+<li>
+<p>Build your site with <code>base_url</code> set to your GitHub Pages URL:
+   <code>yaml
+   base_url: /your-repo-name/</code></p>
+</li>
+<li>
+<p>Push the contents of your <code>_site</code> directory to the <code>gh-pages</code> branch:
+   <code>bash
+   cd _site
+   git init
+   git add .
+   git commit -m "Deploy to GitHub Pages"
+   git remote add origin https://github.com/username/your-repo-name.git
+   git push -f origin master:gh-pages</code></p>
+</li>
+</ol>
+<h4 id="netlify">Netlify</h4>
+<p>To deploy to Netlify:</p>
+<ol>
+<li>Connect your GitHub repository to Netlify</li>
+<li>Set the build command: <code>python zd_cli.py build .</code></li>
+<li>Set the publish directory: <code>_site</code></li>
+</ol>
+<h4 id="vercel">Vercel</h4>
+<p>To deploy to Vercel:</p>
+<ol>
+<li>
+<p>Create a <code>vercel.json</code> file:
+   <code>json
+   {
+     "builds": [
+       { "src": "_site/**", "use": "@vercel/static" }
+     ],
+     "routes": [
+       { "src": "/(.*)", "dest": "_site/$1" }
+     ]
+   }</code></p>
+</li>
+<li>
+<p>Connect your GitHub repository to Vercel</p>
+</li>
+</ol>
+<h4 id="simple-hosting">Simple Hosting</h4>
+<p>For simpler hosting solutions (shared hosting, VPS):</p>
+<ol>
+<li>Upload the contents of the <code>_site</code> directory to your web server.</li>
+<li>Ensure your server is configured to serve the static files correctly.</li>
+</ol>
+<h3 id="custom-domains">Custom Domains</h3>
+<p>If you're using a custom domain:</p>
+<ol>
+<li>
+<p>Update the <code>base_url</code> in your configuration:
+   <code>yaml
+   base_url: https://mysite.com/</code></p>
+</li>
+<li>
+<p>Set up DNS records pointing to your hosting provider</p>
+</li>
+<li>Configure SSL certificates for HTTPS (Let's Encrypt is a free option)</li>
+</ol>
 
     </main>
 

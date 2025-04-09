@@ -1,5 +1,48 @@
 /* Custom Styles for Zerodown Docs */
 
+/* Reduce all font sizes by 5% */
+:root {
+    --font-size-multiplier: 0.95;
+}
+
+/* Apply the font size reduction to all elements */
+html {
+    font-size: calc(100% * var(--font-size-multiplier)) !important;
+}
+
+h1 { font-size: calc(2.5rem * var(--font-size-multiplier)) !important; }
+h2 { font-size: calc(2rem * var(--font-size-multiplier)) !important; }
+h3 { font-size: calc(1.75rem * var(--font-size-multiplier)) !important; }
+h4 { font-size: calc(1.5rem * var(--font-size-multiplier)) !important; }
+h5 { font-size: calc(1.25rem * var(--font-size-multiplier)) !important; }
+h6 { font-size: calc(1rem * var(--font-size-multiplier)) !important; }
+
+/* Fix syntax highlighting issues - remove red boxes */
+.codehilite .err, 
+code .err, 
+pre .err {
+    border: none !important;
+    background-color: transparent !important;
+    color: #666 !important;
+}
+
+/* Specifically style quotes and colons in code blocks */
+code *, pre *, .codehilite * {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Override any potential error styling from Pygments */
+.codehilite .p, /* punctuation */
+.codehilite .o, /* operator */
+.codehilite .s, /* string */
+.codehilite .s1, /* single quoted string */
+.codehilite .s2 /* double quoted string */ {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+}
+
 /* Restrict container width slightly more */
 .container {
     max-width: 960px; /* Adjust as desired */
