@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Removed data-theme attribute -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark"> <!-- Added for auto light/dark mode -->
+    <title>Markdown Features</title>
+    <meta name="description" content="Learn about front matter, linking, images, and shortcodes in Zerodown.">
+    
+    
+    <link rel="stylesheet" href="/styles/main.css">
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+    
+    
+    <link rel="stylesheet" href="/styles/custom.css">
+    
+    
+    <link rel="stylesheet" href="/styles/syntax.css">
+    
+    
+    
+</head>
+
+<body>
+
+    
+    <header class="container">
+        <h1 id="zerodown"><a href="/">⚡ Zerodown ⚡</a></h1>
+<p><em>Zero effort, maximum markdown power!</em></p>
+<!-- Navigation Links -->
+<p><a href="/getting-started.html">Docs</a> &nbsp;&nbsp; <a href="/markdown-features.html">Features</a> &nbsp;&nbsp; <a href="https://github.com/yourusername/zerodown">GitHub</a> &nbsp;&nbsp; <a href="/about.html">About</a></p>
+    </header>
+
+    
+    <main class="container">
+        
+    
+    <article>
+        
+        
+        
+        
+        
+        
+        
+        
+        <div>
+             <h1 id="markdown-features">Markdown Features</h1>
+<p>Zerodown leverages standard Markdown syntax and extends it with useful features like front matter for metadata and shortcodes for dynamic content.</p>
+<h2 id="front-matter">Front Matter</h2>
+<p>Each Markdown file (<code>.md</code>) can optionally start with a <a href="https://yaml.org/">YAML</a> front matter block enclosed by triple dashes (<code>---</code>). This block defines metadata for the page.</p>
+<div class="codehilite"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">Awesome</span><span class="nv"> </span><span class="s">Post&quot;</span><span class="w">                </span><span class="c1"># Page title (used in templates, &lt;title&gt; tag)</span>
+<span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-04-09</span><span class="w">                    </span><span class="c1"># Publication date (useful for sorting)</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">brief</span><span class="nv"> </span><span class="s">summary</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">post.&quot;</span><span class="w"> </span><span class="c1"># Page description (used for meta tags)</span>
+<span class="nt">author</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Jane</span><span class="nv"> </span><span class="s">Doe&quot;</span><span class="w">                      </span><span class="c1"># Optional author name</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/assets/images/hero.jpg&quot;</span><span class="w">      </span><span class="c1"># Optional featured image path (relative to content dir)</span>
+<span class="nt">featured</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                      </span><span class="c1"># Custom flag (e.g., for highlighting)</span>
+<span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;python&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;static</span><span class="nv"> </span><span class="s">site&quot;</span><span class="p p-Indicator">]</span><span class="w">        </span><span class="c1"># Custom list of tags</span>
+<span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;custom-post.html&quot;</span><span class="w">          </span><span class="c1"># Optional: Override default template for this page</span>
+<span class="nn">---</span>
+
+<span class="c1"># Your Markdown Content Starts Here</span>
+
+<span class="l l-Scalar l-Scalar-Plain">Regular Markdown content follows the front matter block.</span>
+</code></pre></div>
+
+<p>This metadata is accessible within Jinja templates (e.g., <code>{{ title }}</code>, <code>{{ date }}</code>) and can be used for sorting, filtering, and displaying page-specific information.</p>
+<h2 id="links-and-images">Links and Images</h2>
+<p>Use standard Markdown syntax for creating links and embedding images.</p>
+<div class="codehilite"><pre><span></span><code><span class="gh"># Link to another Markdown page within your site</span>
+[<span class="nt">Read the Getting Started guide</span>](<span class="na">getting-started.md</span>)
+
+<span class="gh"># Link to an external website</span>
+[<span class="nt">Visit PicoCSS</span>](<span class="na">https://picocss.com</span>)
+
+<span class="gh"># Embed an image from your assets directory</span>
+![<span class="nt">Diagram showing Zerodown flow</span>](<span class="na">../assets/diagram.png</span>)
+</code></pre></div>
+
+<p><strong>Important:</strong> Zerodown automatically processes relative paths in links (<code>href</code>) and image sources (<code>src</code>) to ensure they work correctly in the final built site, regardless of how deeply nested your content files are. You should generally use paths relative to the current Markdown file.</p>
+<h3 id="image-dimensions-special-syntax">Image Dimensions (Special Syntax)</h3>
+<p>You can optionally specify image <code>width</code> and/or <code>height</code> directly in the image alt text using curly braces <code>{}</code>:</p>
+<div class="codehilite"><pre><span></span><code>![<span class="nt">Logo {width=100 height=50}</span>](<span class="na">../assets/logo.png</span>)
+![<span class="nt">Thumbnail {width=150}</span>](<span class="na">../assets/thumb.jpg</span>) 
+</code></pre></div>
+
+<p>This adds <code>width="..."</code> and <code>height="..."</code> attributes to the generated <code>&lt;img&gt;</code> tag. If dimensions aren't specified, Pico.css provides sensible responsive defaults.</p>
+<h2 id="shortcodes">Shortcodes</h2>
+<p>Shortcodes allow you to embed dynamic content or complex HTML generated by Python functions directly into your Markdown.</p>
+<p>They use a simple bracket syntax: <code>&lt;p&gt;Unknown shortcode: [shortcode_name]&lt;/p&gt;</code></p>
+<div class="codehilite"><pre><span></span><code><span class="gu">## Latest Blog Posts</span>
+
+Here are the latest posts:
+&lt;p&gt;No posts found.&lt;/p&gt; 
+
+<span class="gu">## Explore Our Sections</span>
+
+[section_list]
+
+<span class="gu">## Featured Content</span>
+
+Check out these highlights:
+&lt;p&gt;No featured items found. Mark items as featured by adding &lt;code&gt;featured: true&lt;/code&gt; to their frontmatter.&lt;/p&gt;
+</code></pre></div>
+
+<h3 id="available-shortcodes">Available Shortcodes</h3>
+<ul>
+<li><strong><code>[latest_posts]</code></strong>: Displays a list of the most recent items from a specified section.<ul>
+<li><code>count</code>: (Optional) Number of items to display (default: 3).</li>
+<li><code>section</code>: (Optional) Section key (from <code>config.yaml</code>) to pull items from (default: "posts").</li>
+</ul>
+</li>
+<li><strong><code>[section_list]</code></strong>: Displays a list of links to all content sections defined in <code>config.yaml</code>.<ul>
+<li><code>section</code>: (Optional) If provided, lists items <em>within</em> that specific section instead of listing all sections.</li>
+</ul>
+</li>
+<li><strong><code>[featured_items]</code></strong>: Displays items that have <code>featured: true</code> set in their front matter.<ul>
+<li><code>count</code>: (Optional) Number of items to display (default: 3).</li>
+<li><code>section</code>: (Optional) Limit featured items to those within a specific section.</li>
+</ul>
+</li>
+</ul>
+<p><em>(Note: More shortcodes might be available or added in the future. Custom shortcodes are also possible.)</em></p>
+        </div>
+    </article>
+
+    </main>
+
+    
+    <footer class="container">
+        <small><p>Built with <a href="https://github.com/codevalley/zerodown">Zerodown</a>. <!-- TODO: Link to project -->Styled with <a href="https://picocss.com">Pico.css</a>. </p></small>
+    </footer>
+
+    
+    
+
+</body>
+
+</html> 

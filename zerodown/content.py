@@ -241,46 +241,63 @@ def build_homepage(config, jinja_env, all_items):
 
 def process_top_level_pages(config, jinja_env):
     """
-    Process any standalone pages at the top level of the content directory.
+    Process any standalone Markdown pages at the top level of the content directory.
+    Excludes 'home.md' which is handled by build_homepage.
     
     Args:
         config: Configuration module
         jinja_env: Jinja2 environment
     """
-    # This is a placeholder for future functionality
-    # Example: Build an about page from content/about.md if it exists
-    about_md_path = os.path.join(config.CONTENT_DIR, "about.md")
-    if os.path.exists(about_md_path) and os.path.isfile(about_md_path):
-        # Determine the output path
-        about_output_path = os.path.join(config.OUTPUT_DIR, "about.html")
+    zconsole.info("Processing top-level content pages...")
+    
+    # List files in the content directory root
+    try:
+        content_files = os.listdir(config.CONTENT_DIR)
+    except FileNotFoundError:
+        zconsole.warning(f"Content directory not found: {config.CONTENT_DIR}")
+        return
         
-        # Create context for the page
-        context = {
-            "title": "About",
-            "config": config
-        }
-        
-        # Parse the markdown file with asset handling and shortcode processing
-        about_item = parse_markdown_file(
-            about_md_path, 
-            output_path=about_output_path, 
-            base_url=config.BASE_URL,
-            context=context  # Pass context for shortcode processing
-        )
-        
-        if about_item:
-            # Decide on template
-            about_template = getattr(config, 'TOP_LEVEL_TEMPLATE', 'page.html')
-            
-            # Create context
-            context = {
-                "item": about_item, 
-                "title": f"{about_item['metadata'].get('title', 'About')} - {config.SITE_NAME}"
-            }
-            
-            # Render and write
-            html_output = render_template(jinja_env, about_template, context)
-            success = write_output_file(about_output_path, html_output)
-            
-            if success:
-                zconsole.success(f"Built page: {about_output_path}")
+    for filename in content_files:
+        # Process only .md files, excluding home.md and hidden files
+        if filename.lower().endswith('.md') and filename.lower() != 'home.md' and not filename.startswith('.'):
+            source_path = os.path.join(config.CONTENT_DIR, filename)
+            if os.path.isfile(source_path):
+                # Determine output path (.md -> .html)
+                output_filename = os.path.splitext(filename)[0] + '.html'
+                output_path = os.path.join(config.OUTPUT_DIR, output_filename)
+                
+                # Basic context for parsing (might need more for shortcodes)
+                parse_context = {"config": config}
+                
+                # Parse the markdown file
+                parsed_item = parse_markdown_file(
+                    source_path, 
+                    output_path=output_path, 
+                    base_url=config.BASE_URL,
+                    context=parse_context 
+                )
+                
+                if parsed_item:
+                    # Decide on template - use frontmatter or default
+                    default_template = getattr(config, 'TOP_LEVEL_TEMPLATE', 'page.html')
+                    page_template = parsed_item.get('metadata', {}).get('template', default_template)
+                    
+                    # Create rendering context
+                    render_context = {
+                        "item": parsed_item,
+                        "config": config,
+                        # Title precedence: frontmatter > filename > default
+                        "title": parsed_item.get('metadata', {}).get('title', filename.replace('.md', '').capitalize()),
+                        "description": parsed_item.get('metadata', {}).get('description', config.SITE_DESCRIPTION),
+                        # Pass the HTML content for the template - no need to escape as it's already HTML
+                        "content": parsed_item.get('content_html')
+                    }
+                    
+                    # Render and write
+                    html_output = render_template(jinja_env, page_template, render_context)
+                    success = write_output_file(output_path, html_output)
+                    
+                    if success:
+                        zconsole.success(f"Built page: {output_path}")
+                else:
+                    zconsole.warning(f"Failed to parse top-level page: {source_path}")

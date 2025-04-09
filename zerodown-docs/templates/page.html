@@ -3,14 +3,16 @@
 {% block content %}
     {# Use an article tag for semantic grouping of page content #}
     <article>
-        {# Render the title from frontmatter if it exists #}
-        {% if title %}
-        <header>
-            <h1>{{ title }}</h1>
-        </header>
-        {% endif %}
+        {# REMOVED the explicit H1 for page title to avoid duplication with header.md title #}
+        {# {% if title %} #}
+        {# <header> #}
+        {#    <h1>{{ title }}</h1> #}
+        {# </header> #}
+        {# {% endif %} #}
         
-        {# Render the main Markdown content #}
-        {{ content | safe }}
+        {# Render the main Markdown content - wrap in a div as a test #}
+        <div>
+             {{ content | safe }}
+        </div>
     </article>
 {% endblock %} 

@@ -1,7 +1,8 @@
 ---
 title: Site Header
 ---
-# [⚡ Zerodown ⚡](/)
+# [⚡ Zerodown ⚡](/) 
 *Zero effort, maximum markdown power!*
 
-| [Docs](/docs/) | [Features](/features.html) | [GitHub](https://github.com/codevalley/zerodown)
+<!-- Navigation Links -->
+[Docs](/getting-started.html) &nbsp;&nbsp; [Features](/markdown-features.html) &nbsp;&nbsp; [GitHub](https://github.com/yourusername/zerodown) &nbsp;&nbsp; [About](/about.html)
