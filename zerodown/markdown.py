@@ -98,12 +98,27 @@ class AssetProcessor(Treeprocessor):
         # If it's a Markdown file, convert to the corresponding HTML path
         if link_abs_path.endswith('.md'):
             # Determine the path relative to the content directory
-            content_dir = os.path.dirname(os.path.dirname(item_dir))
+            # Ensure we handle cases where item_path might be directly in content_dir
+            try:
+                content_dir = config.CONTENT_DIR # Assuming config is accessible or find root differently
+            except NameError:
+                 # Fallback logic if config isn't directly available
+                 # This part might need refinement depending on context access
+                 parts = Path(self.item_path).parts
+                 try:
+                     content_index = parts.index('content')
+                     content_dir = os.path.join(*parts[:content_index+1])
+                 except ValueError:
+                     content_dir = os.path.dirname(self.item_path) # Best guess
+
             if link_abs_path.startswith(content_dir):
                 rel_path = os.path.relpath(link_abs_path, content_dir)
                 # Remove .md extension and add .html
                 base_path = os.path.splitext(rel_path)[0]
                 url_path = '/' + base_path.replace('\\', '/') + '.html'
+                # Ensure leading slash is present
+                if not url_path.startswith('/'):
+                    url_path = '/' + url_path
                 return url_path
         
         # If it's another type of file, treat it as an asset
@@ -213,245 +228,60 @@ def parse_markdown_content(content, source_path=None, output_path=None, base_url
         return None
 
 
-def process_nav_content(content):
-    """
-    Pre-process navigation content before Markdown conversion.
-    This function extracts the nav content, processes the Markdown list separately,
-    and then reinserts it as proper HTML.
-    
-    Args:
-        content: Markdown content string
-        
-    Returns:
-        str: Processed content with navigation lists handled
-    """
-    # Find nav tags with Markdown lists inside
-    nav_pattern = r'(<nav\s+class="[^"]+"\s*>)(.*?)(</nav>)'
-    
-    def nav_replacement(match):
-        nav_open = match.group(1)
-        nav_content = match.group(2)
-        nav_close = match.group(3)
-        
-        # Process the nav content as Markdown to get a proper list
-        if '*' in nav_content:  # Only process if it contains list items
-            # Convert Markdown list to HTML
-            list_html = markdown.markdown(nav_content)
-            # Make sure we have a proper ul structure
-            if '<ul>' not in list_html:
-                list_html = f'<ul>{list_html}</ul>'
-            return f'{nav_open}{list_html}{nav_close}'
-        
-        return match.group(0)  # Return unchanged if no list items
-    
-    # Process nav tags
-    return re.sub(nav_pattern, nav_replacement, content, flags=re.DOTALL)
-
-
-def fix_fenced_code_blocks(content):
-    """
-    Fix common issues with fenced code blocks in Markdown content.
-    This is crucial for proper rendering of fenced code blocks.
-    
-    Args:
-        content: Markdown content string
-        
-    Returns:
-        str: Processed Markdown content
-    """
-    # Standardize line endings first to ensure consistent regex matching
-    content = content.replace('\r\n', '\n')
-    
-    # The problem is often that fenced code blocks need to have:
-    # 1. A blank line BEFORE the opening ```
-    # 2. A proper newline after the language specifier
-    # 3. A proper newline before the closing ```
-    # 4. The closing ``` needs to be on its own line
-    
-    # First, ensure there's a blank line before code blocks if they come after a list item
-    # This is important for proper rendering in CommonMark
-    content = re.sub(r'(\n\s*\d+\.\s+.*?:)\s*\n\s*(```)', r'\1\n\n\2', content, flags=re.DOTALL)
-    
-    # Find all fenced code blocks and fix them one by one (non-greedy matching)
-    # Using split and join to preserve the non-matching parts exactly as they are
-    parts = re.split(r'(```\w*.*?```)', content, flags=re.DOTALL)
-    
-    for i in range(1, len(parts), 2):  # Process only the code block parts
-        code_block = parts[i]
-        
-        # Fix opening fence to ensure language specifier is followed by a newline
-        code_block = re.sub(r'```(\w*)\s*', r'```\1\n', code_block)
-        
-        # Fix closing fence to ensure it has its own line
-        if '```' in code_block[3:]:  # Skip the opening ```
-            open_part, close_part = code_block[:3], code_block[3:]
-            last_line_pos = close_part.rfind('\n', 0, close_part.rfind('```'))
-            
-            if last_line_pos != -1:
-                # Ensure the closing ``` is on its own line
-                close_part_fixed = close_part[:last_line_pos+1] + close_part[last_line_pos+1:].replace('```', '\n```')
-                code_block = open_part + close_part_fixed
-        
-        parts[i] = code_block
-    
-    # Rejoin all parts
-    fixed_content = ''.join(parts)
-    
-    # Final cleanup to ensure proper spacing around lists and code blocks
-    fixed_content = re.sub(r'(\n\s*\d+\.\s+.*?)\n(```)', r'\1\n\n\2', fixed_content)
-    
-    return fixed_content
-
-
-def fix_html_code_blocks(html_content):
-    """
-    Fix any issues with rendered HTML code blocks.
-    
-    Args:
-        html_content: HTML content string
-        
-    Returns:
-        str: Processed HTML content
-    """
-    # Fix code blocks that have <br> tags inside them from nl2br extension
-    # First pattern: <code>code<br>more code</code>
-    html_content = re.sub(r'(<code.*?>)(.*?)</code>', 
-                         lambda m: m.group(1) + m.group(2).replace('<br />', '\n') + '</code>',
-                         html_content, flags=re.DOTALL)
-    
-    # Second pattern: Detect incorrectly formatted code blocks
-    # This looks for text that should be a code block but is rendered as regular text with <br> tags
-    pattern = r'<p>(```\w*)<br />(.*?)<br />(```)</p>'
-    
-    def code_block_fix(match):
-        # Extract the parts of the malformed code block
-        start = match.group(1)  # Opening fence with optional language
-        code = match.group(2)   # Code content
-        end = match.group(3)    # Closing fence
-        
-        # Extract language if present
-        lang_match = re.match(r'```(\w+)', start)
-        lang = lang_match.group(1) if lang_match else ''
-        
-        # Format as a proper code block
-        # Replace all <br /> tags with newlines
-        code = code.replace('<br />', '\n')
-        
-        # Return a properly formatted code block
-        return f'<div class="codehilite"><pre><code class="language-{lang}">{code}</code></pre></div>'
-    
-    # Apply the fix
-    html_content = re.sub(pattern, code_block_fix, html_content, flags=re.DOTALL)
-    
-    # Third pattern: Fix list items followed by code blocks that got merged
-    # For example: <li>Item text:<br />```bash<br />code<br />```</li>
-    pattern_list_code = r'<li>(.*?):<br\s*/?>\s*(```\w*)<br\s*/?>(.*?)<br\s*/?>\s*(```)\s*</li>'
-    
-    def list_code_fix(match):
-        # Extract the parts
-        item_text = match.group(1)
-        fence_open = match.group(2)
-        code = match.group(3)
-        fence_close = match.group(4)
-        
-        # Extract language if present
-        lang_match = re.match(r'```(\w+)', fence_open)
-        lang = lang_match.group(1) if lang_match else ''
-        
-        # Format properly - close the list item, then add the code block
-        code = code.replace('<br />', '\n')
-        
-        return f'<li>{item_text}:</li></ol><div class="codehilite"><pre><code class="language-{lang}">{code}</code></pre></div><ol>'
-    
-    # Apply the list item fix
-    html_content = re.sub(pattern_list_code, list_code_fix, html_content, flags=re.DOTALL)
-    
-    # Fourth pattern: Fix ordered list items that got split by a code block
-    # First check if we have two consecutive ol tags with only the closing tag between them
-    html_content = re.sub(r'</ol>\s*<ol>', '', html_content)
-    
-    # Fifth pattern: Handle any code blocks that show up as inline code with backticks
-    # For example: <p>`bash<br />code<br />`</p>
-    inline_code_pattern = r'<p><code>(\w+)<br\s*/?>(.*?)<br\s*/?></code></p>'
-    
-    def inline_code_fix(match):
-        lang = match.group(1)
-        code = match.group(2)
-        code = code.replace('<br />', '\n')
-        
-        return f'<div class="codehilite"><pre><code class="language-{lang}">{code}</code></pre></div>'
-    
-    # Apply the inline code fix
-    html_content = re.sub(inline_code_pattern, inline_code_fix, html_content, flags=re.DOTALL)
-    
-    return html_content
-
-
 def convert_markdown_to_html(content, source_path=None, output_path=None, base_url=None, context=None):
     """
-    Converts Markdown content to HTML with optional asset processing and shortcode processing.
-    Special attention is given to properly rendering fenced code blocks.
+    Converts Markdown content to HTML using standard extensions.
+    Shortcodes are processed AFTER HTML generation.
     
     Args:
         content: Markdown content string
         source_path: Path to the source file (for link adjustment)
         output_path: Path where the HTML will be output (for link adjustment)
         base_url: Base URL of the site (for link adjustment)
-        context: Context dictionary for shortcode processing
+        context: Context dictionary for shortcode processing (passed through)
         
     Returns:
         str: HTML content
     """
-    # Pre-process content to fix any fenced code block issues
-    # This is critical for proper rendering of code blocks
-    content = fix_fenced_code_blocks(content)
+    # DO NOT pre-process code blocks - let the markdown processor handle them directly
+    # This prevents issues with nesting and content being treated as code blocks
     
-    # Process shortcodes if context is provided
-    if context:
-        content = process_shortcodes(content, context)
-
-    # Configure extension settings for optimal code block handling
+    # Standard and reliable set of extensions
+    extensions = [
+        'markdown.extensions.extra',        # Includes abbr, attr_list, def_list, fenced_code, footnotes, tables, smarty
+        'markdown.extensions.codehilite',   # Syntax highlighting
+        'markdown.extensions.toc',          # Table of contents
+        'markdown.extensions.sane_lists',   # Improved list handling
+        # 'markdown.extensions.nl2br',      # Often causes issues, leave out unless needed
+    ]
     extension_configs = {
-        'codehilite': {
+        'markdown.extensions.codehilite': {
             'css_class': 'codehilite',
             'linenums': False,
-            'guess_lang': True,
-            'use_pygments': True
+            'guess_lang': True
         },
-        'fenced_code': {
-            'lang_prefix': 'language-'  # Standard prefix for code language
-        },
-        'markdown.extensions.tables': {},
-        'markdown.extensions.toc': {'permalink': False}
+        'markdown.extensions.toc': {
+            'permalink': False  # Disable permalink symbols that add the ¶ character
+        }
     }
-    
-    # Order matters! Process code blocks before nl2br to avoid breaking them
-    extensions = [
-        'markdown.extensions.fenced_code',  # Support ```code``` blocks (must come first)
-        'markdown.extensions.codehilite',   # Add syntax highlighting classes
-        'markdown.extensions.tables',       # Support Markdown tables
-        'markdown.extensions.toc',          # Table of contents
-        'markdown.extensions.sane_lists',   # Better list handling
-        'markdown.extensions.nl2br',        # Convert newlines to <br>
-        'markdown.extensions.extra'         # Includes many common extensions
-    ]
-    
+
     # Add asset processing if source_path is provided
     if source_path:
         asset_ext = AssetExtension(source_path, output_path, base_url)
         extensions.append(asset_ext)
-    
-    # Convert Markdown to HTML with proper handling of fenced code blocks
+
+    # Convert Markdown to HTML
     html_content = markdown.markdown(
-        content, 
-        extensions=extensions, 
+        content,
+        extensions=extensions,
         extension_configs=extension_configs,
-        output_format='html5'  # Ensures modern HTML5 output
+        output_format='html5'
     )
-    
-    # Post-process to fix any remaining issues with code blocks
-    html_content = fix_html_code_blocks(html_content)
-    
+
+    # Process shortcodes AFTER HTML generation if context is provided
+    if context:
+        html_content = process_shortcodes(html_content, context)
+
     return html_content
 
 

@@ -13,4 +13,83 @@ header.container h1 a {
 
 header.container h1 a:hover {
     text-decoration: none; /* Keep underline off on hover too */
+}
+
+/* Hide permalink paragraph symbols */
+a.headerlink {
+    visibility: hidden;
+    font-size: 0.8em;
+    color: var(--primary);
+}
+
+h1:hover a.headerlink, 
+h2:hover a.headerlink, 
+h3:hover a.headerlink, 
+h4:hover a.headerlink, 
+h5:hover a.headerlink, 
+h6:hover a.headerlink {
+    visibility: visible;
+}
+
+/* Fix article styling to not look like a code block */
+article, 
+main article, 
+body main article,
+main.container article {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/* Fix article content styling */
+article div, 
+main article div, 
+article p, 
+article h1, 
+article h2, 
+article h3, 
+article h4, 
+article h5, 
+article h6,
+article ul,
+article ol,
+article li {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Force code blocks to display properly */
+article pre,
+article code,
+article .codehilite {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+/* Reset any extra card styling that might be applied */
+.card, 
+article.card, 
+main article.card {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Make sure all text has proper contrast against the background */
+body, p, li, a, h1, h2, h3, h4, h5, h6 {
+    color: var(--pico-color) !important;
+}
+
+/* Proper code block styling */
+pre {
+    background-color: var(--pico-code-background-color) !important;
+    padding: 1rem !important;
+    border-radius: var(--pico-border-radius) !important;
 } 

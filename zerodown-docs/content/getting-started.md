@@ -39,6 +39,7 @@ The easiest way to start is using the `init` command.
 
 1.  **Initialize a new site**:
     Choose a template (`basic`, `blog`, `portfolio`). This command creates a new directory with the template files and a default `config.yaml`.
+    
     ```bash
     # Create a site named 'my-awesome-site' using the basic template
     zerodown init my-awesome-site --template basic

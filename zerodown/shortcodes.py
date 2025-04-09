@@ -39,7 +39,8 @@ def process_shortcodes(content, context):
         str: Processed content with shortcodes replaced
     """
     # Match shortcodes like [shortcode_name param1="value1" param2="value2"]
-    pattern = r'\[(\w+)(?:\s+([^\]]+))?\]'
+    # More specific pattern to avoid matching common markdown
+    pattern = r'(?<!\s)\[(\w+)(?:\s+([^\]]+))?\](?!\()'
     
     def replace_shortcode(match):
         shortcode_name = match.group(1)
@@ -57,6 +58,11 @@ def process_shortcodes(content, context):
         # Skip if it looks like a standard Markdown reference-style link
         if re.match(r'^[\w\-\.]+$', shortcode_name) and not params_str:
             # This is probably a reference-style Markdown link
+            return match.group(0)
+        
+        # Avoid processing if there are spaces around the shortcode name
+        # This helps prevent false positives in documentation
+        if " " in match.group(0).strip()[1:-1]:
             return match.group(0)
         
         # Parse parameters
@@ -118,30 +124,16 @@ def featured_items_shortcode(context, count="3", section=None):
     
     template_str = """
     <div class="featured-items">
-        <div class="item-grid">
+        <ul>
             {% for item in items %}
-            <div class="item-card">
-                {% if item.metadata.image %}
-                <div class="item-card-image">
-                    <img src="{{ item.metadata.image }}" alt="{{ item.metadata.title }}" style="max-width: 100%; height: auto;">
-                </div>
+            <li>
+                <a href="{{ item.url }}">{{ item.metadata.title }}</a>
+                {% if item.metadata.description %}
+                <p>{{ item.metadata.description }}</p>
                 {% endif %}
-                <div class="item-card-content">
-                    <h3 class="item-card-title">
-                        <a href="{{ item.url }}">{{ item.metadata.title }}</a>
-                    </h3>
-                    <div class="item-card-description">
-                        {% if item.metadata.description %}
-                            {{ item.metadata.description }}
-                        {% else %}
-                            {{ item.content_html | striptags | truncate(100) | safe }}
-                        {% endif %}
-                    </div>
-                    <a href="{{ item.url }}" class="read-more">Read More</a>
-                </div>
-            </div>
+            </li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
     """
     template = Template(template_str)
@@ -161,41 +153,39 @@ def latest_posts_shortcode(context, count="3", section="posts"):
         str: HTML for the latest posts
     """
     count = int(count)
-    posts = []
+    items = []
     
     if "latest_items" in context:
         for item in context["latest_items"]:
             if item.get("section_key") == section:
-                posts.append(item)
+                items.append(item)
         
-        posts = sorted(posts, key=lambda x: x.get("metadata", {}).get("date", ""), reverse=True)[:count]
+        items = items[:count]  # Limit to requested count
     
-    if not posts:
+    if not items:
         return "<p>No posts found.</p>"
     
-    # Render the posts
     template_str = """
     <div class="latest-posts">
-        {% for post in posts %}
-        <div class="post-item">
-            <h3><a href="{{ post.url }}">{{ post.metadata.title }}</a></h3>
-            {% if post.metadata.date %}
-            <span class="date">{{ post.metadata.date.strftime('%B %d, %Y') }}</span>
-            {% endif %}
-            <div class="excerpt">
-                {% if post.metadata.excerpt %}
-                    {{ post.metadata.excerpt }}
-                {% else %}
-                    {{ post.content_html | striptags | truncate(100) | safe }}
+        <ul>
+            {% for item in items %}
+            <li>
+                <a href="{{ item.url }}">{{ item.metadata.title }}</a>
+                {% if item.metadata.date %}
+                <time datetime="{{ item.metadata.date }}">
+                    {{ item.metadata.date.strftime('%B %d, %Y') }}
+                </time>
                 {% endif %}
-            </div>
-            <a href="{{ post.url }}" class="read-more">Read More</a>
-        </div>
-        {% endfor %}
+                {% if item.metadata.description %}
+                <p>{{ item.metadata.description }}</p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
     </div>
     """
     template = Template(template_str)
-    return template.render(posts=posts)
+    return template.render(items=items)
 
 @register_shortcode("section_list")
 def section_list_shortcode(context, section=None):
