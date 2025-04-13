@@ -34,3 +34,6 @@ nav_items:
     url: /about.html
   - title: Contact
     url: /contact.html
+
+# Shortcodes module
+shortcodes_module: shortcodes

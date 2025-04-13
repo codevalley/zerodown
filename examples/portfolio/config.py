@@ -37,3 +37,6 @@ NAV_ITEMS = [
     {"title": "About", "url": "/about.html"},
     {"title": "Contact", "url": "/contact.html"}
 ]
+
+# Shortcodes module
+SHORTCODES_MODULE = "shortcodes"

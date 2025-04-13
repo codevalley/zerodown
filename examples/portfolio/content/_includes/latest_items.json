@@ -1,0 +1,36 @@
+[
+  {
+    "url": "/projects/website-redesign.html",
+    "slug": "website-redesign",
+    "section_key": "projects",
+    "metadata": {
+      "title": "Corporate Website Redesign",
+      "client": "Acme Corporation",
+      "date": "2023-03-15",
+      "order": "1",
+      "featured": true,
+      "tags": "[Web Design, UI/UX, Responsive]",
+      "image": "/assets/project3.png",
+      "summary": "A complete redesign of Acme Corporation's website with a focus on user experience and modern design principles.",
+      "link": "https://example.com"
+    },
+    "content_html": "<h1>Corporate Website Redesign</h1>"
+  },
+  {
+    "url": "/projects/mobile-app.html",
+    "slug": "mobile-app",
+    "section_key": "projects",
+    "metadata": {
+      "title": "Fitness Tracking Mobile App",
+      "client": "FitLife",
+      "date": "2023-05-20",
+      "order": "2",
+      "featured": true,
+      "tags": "[Mobile App, UI/UX, React Native]",
+      "image": "/assets/project4.png",
+      "summary": "A cross-platform mobile app for fitness tracking with personalized workout plans and nutrition guidance.",
+      "link": "https://example.com/fitlife"
+    },
+    "content_html": "<h1>Fitness Tracking Mobile App</h1>"
+  }
+]
